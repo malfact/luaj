@@ -14,3 +14,6 @@ jit/
 docs
 *.0
 .java-version
+.gradle/
+.build/
+.idea/

@@ -34,42 +34,9 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.IoLib;
 import org.luaj.vm2.lib.LibFunction;
 
-/** 
- * Subclass of {@link IoLib} and therefore {@link LibFunction} which implements the lua standard {@code io} 
- * library for the JSE platform. 
- * <p> 
- * The implementation of the is based on CLDC 1.0 and StreamConnection.
- * However, seek is not supported. 
- * <p>
- * Typically, this library is included as part of a call to 
- * {@link org.luaj.vm2.lib.jme.JmePlatform#standardGlobals()}
- * <pre> {@code
- * Globals globals = JmePlatform.standardGlobals();
- * globals.get("io").get("write").call(LuaValue.valueOf("hello, world\n"));
- * } </pre>
- * <p>
- * For special cases where the smallest possible footprint is desired, 
- * a minimal set of libraries could be loaded
- * directly via {@link Globals#load(LuaValue)} using code such as:
- * <pre> {@code
- * Globals globals = new Globals();
- * globals.load(new JmeBaseLib());
- * globals.load(new PackageLib());
- * globals.load(new JmeIoLib());
- * globals.get("io").get("write").call(LuaValue.valueOf("hello, world\n"));
- * } </pre>
- * <p>However, other libraries such as <em>MathLib</em> are not loaded in this case.
- * <p>
- * This has been implemented to match as closely as possible the behavior in the corresponding library in C.
- * @see LibFunction
- * @see org.luaj.vm2.lib.jse.JsePlatform
- * @see org.luaj.vm2.lib.jme.JmePlatform
- * @see IoLib
- * @see org.luaj.vm2.lib.jse.JseIoLib
- * @see <a href="http://www.lua.org/manual/5.2/manual.html#6.8">Lua 5.2 I/O Lib Reference</a>
- */
+
 public class JmeIoLib extends IoLib {
-	
+
 	protected File wrapStdin() throws IOException {
 		return new FileImpl(globals.STDIN);
 	}
