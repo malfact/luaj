@@ -1,1 +1,6 @@
 rootProject.name = 'luaj'
+include 'src:untitled'
+findProject(':src:untitled')?.name = 'untitled'
+include 'src:untitled1'
+findProject(':src:untitled1')?.name = 'untitled1'
+
