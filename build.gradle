@@ -8,13 +8,12 @@ group = 'org.luaj'
 sourceSets {
     main {
         java {
-            srcDirs=['src/core', 'src/jse']
+            srcDirs=['src/core/java','src/jse/java']
         }
     }
     test {
-        java {
-            srcDirs=['test/java', 'test/junit']
-        }
+        java {srcDirs=['src/test/java']}
+        resources {srcDirs=['src/test/resources']}
     }
 }
 
@@ -28,6 +27,11 @@ dependencies {
     // MicroEmu is a pure Java implementation of Java ME
     implementation 'org.microemu:microemulator:2.0.4'
 
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation(platform('org.junit:junit-bom:5.10.2'))
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
 }
