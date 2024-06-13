@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import org.luaj.vm2.Globals;
+import org.luaj.vm2.util.Globals;
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.Print;
 import org.luaj.vm2.Prototype;

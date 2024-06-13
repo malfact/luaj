@@ -23,7 +23,7 @@
  * malfact @ June, 2024
  */
 
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 
 import org.luaj.vm2.lib.LibFunction;
@@ -45,12 +45,9 @@ public abstract class LuaFunction extends LuaValue {
 	/** Shared static metatable for all functions and closures. */
 	public static LuaValue s_metatable;
 
-	public int type() {
-		return TFUNCTION;
-	}
-	
-	public String typename() {
-		return "function";
+	@Override
+	public LuaType getType() {
+		return LuaType.FUNCTION;
 	}
 	
 	public boolean isfunction() {

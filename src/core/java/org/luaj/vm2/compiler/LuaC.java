@@ -26,8 +26,12 @@ import java.io.InputStream;
 import java.util.Hashtable;
 
 import org.luaj.vm2.*;
+import org.luaj.vm2.core.LuaClosure;
+import org.luaj.vm2.core.LuaFunction;
+import org.luaj.vm2.core.LuaString;
 import org.luaj.vm2.lib.BaseLib;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.util.Globals;
 
 /**
  * Compiler for Lua.

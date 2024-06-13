@@ -22,6 +22,10 @@
 package org.luaj.vm2;
 
 import org.luaj.vm2.compiler.LuaC;
+import org.luaj.vm2.core.LuaClosure;
+import org.luaj.vm2.core.LuaString;
+import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.util.Globals;
 
 /**
  * Prototype representing compiled lua code. 
@@ -96,7 +100,7 @@ public class Prototype {
 	public LocVars[] locvars;
 	/* upvalue information */
 	public Upvaldesc[] upvalues;
-	public LuaString  source;
+	public LuaString source;
 	public int linedefined;
 	public int lastlinedefined;
 	public int numparams;

@@ -19,8 +19,10 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
+
+import java.io.Serial;
 
 /**
  * RuntimeException that is thrown and caught in response to a lua error. 
@@ -39,6 +41,7 @@ package org.luaj.vm2;
  * was not supplied.
  */
 public class LuaError extends RuntimeException {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	protected int level;

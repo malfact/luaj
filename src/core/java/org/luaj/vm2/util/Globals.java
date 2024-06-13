@@ -10,7 +10,7 @@
  *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,8 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-package org.luaj.vm2;
+/* LuaJ JSE 22 Update
+ * malfact @ June 2024
+ */
+package org.luaj.vm2.util;
 
+import org.luaj.vm2.Prototype;
 import org.luaj.vm2.compiler.LuaC;
 
 import java.io.IOException;
@@ -28,6 +32,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 
+import org.luaj.vm2.core.*;
 import org.luaj.vm2.lib.BaseLib;
 import org.luaj.vm2.lib.DebugLib;
 import org.luaj.vm2.lib.IoLib;

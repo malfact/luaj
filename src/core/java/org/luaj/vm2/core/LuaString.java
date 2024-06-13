@@ -19,9 +19,12 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 
+import org.luaj.vm2.Buffer;
+import org.luaj.vm2.LuaDouble;
+import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.lib.MathLib;
 
 import java.io.ByteArrayInputStream;
@@ -248,16 +251,13 @@ public class LuaString extends LuaValue {
 	public LuaValue getmetatable() {
 		return s_metatable;
 	}
-	
-	public int type() {
-		return TSTRING;
+
+	@Override
+	public LuaType getType() {
+		return LuaType.STRING;
 	}
 
-	public String typename() {
-		return "string";
-	}
-	
-	public String tojstring() {
+    public String tojstring() {
 		return decodeAsUtf8(m_bytes, m_offset, m_length);
 	}
 
@@ -292,24 +292,24 @@ public class LuaString extends LuaValue {
 	// relational operators, these only work with other strings
 	public LuaValue lt(LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)>0? TRUE : FALSE) : super.lt(rhs); }
 	public boolean lt_b( LuaValue rhs )       { return rhs.isstring() ? rhs.strcmp(this)>0 : super.lt_b(rhs); }
-	public boolean lt_b( int rhs )         { typerror("attempt to compare string with number"); return false; }
-	public boolean lt_b( double rhs )      { typerror("attempt to compare string with number"); return false; }
+	public boolean lt_b( int rhs )         { typeError("attempt to compare string with number"); return false; }
+	public boolean lt_b( double rhs )      { typeError("attempt to compare string with number"); return false; }
 	public LuaValue lteq(LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)>=0? TRUE : FALSE) : super.lteq(rhs); }
 	public boolean lteq_b( LuaValue rhs )     { return rhs.isstring() ? rhs.strcmp(this)>=0 : super.lteq_b(rhs); }
-	public boolean lteq_b( int rhs )       { typerror("attempt to compare string with number"); return false; }
-	public boolean lteq_b( double rhs )    { typerror("attempt to compare string with number"); return false; }
+	public boolean lteq_b( int rhs )       { typeError("attempt to compare string with number"); return false; }
+	public boolean lteq_b( double rhs )    { typeError("attempt to compare string with number"); return false; }
 	public LuaValue gt(LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)<0? TRUE : FALSE) : super.gt(rhs); }
 	public boolean gt_b( LuaValue rhs )       { return rhs.isstring() ? rhs.strcmp(this)<0 : super.gt_b(rhs); }
-	public boolean gt_b( int rhs )         { typerror("attempt to compare string with number"); return false; }
-	public boolean gt_b( double rhs )      { typerror("attempt to compare string with number"); return false; }
+	public boolean gt_b( int rhs )         { typeError("attempt to compare string with number"); return false; }
+	public boolean gt_b( double rhs )      { typeError("attempt to compare string with number"); return false; }
 	public LuaValue gteq(LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)<=0? TRUE : FALSE) : super.gteq(rhs); }
 	public boolean gteq_b( LuaValue rhs )     { return rhs.isstring() ? rhs.strcmp(this)<=0 : super.gteq_b(rhs); }
-	public boolean gteq_b( int rhs )       { typerror("attempt to compare string with number"); return false; }
-	public boolean gteq_b( double rhs )    { typerror("attempt to compare string with number"); return false; }
+	public boolean gteq_b( int rhs )       { typeError("attempt to compare string with number"); return false; }
+	public boolean gteq_b( double rhs )    { typeError("attempt to compare string with number"); return false; }
 
 	// concatenation
 	public LuaValue concat(LuaValue rhs)      { return rhs.concatTo(this); }
-	public Buffer   concat(Buffer rhs)        { return rhs.concatTo(this); }
+	public Buffer concat(Buffer rhs)        { return rhs.concatTo(this); }
 	public LuaValue concatTo(LuaNumber lhs)   { return concatTo(lhs.strvalue()); }
 	public LuaValue concatTo(LuaString lhs)   {
 		byte[] b = new byte[lhs.m_length+this.m_length];
@@ -333,7 +333,7 @@ public class LuaString extends LuaValue {
 	private double checkarith() {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
-			aritherror();
+			arithmeticError();
 		return d;
 	}
 	
@@ -349,7 +349,7 @@ public class LuaString extends LuaValue {
 	public double checkdouble() {
 		double d = scannumber();
 		if ( Double.isNaN(d) )
-			argerror("number");
+			argumentError("number");
 		return d;
 	}
 	public LuaNumber checknumber() {

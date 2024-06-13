@@ -21,6 +21,9 @@
 ******************************************************************************/
 package org.luaj.vm2;
 
+import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.core.Varargs;
+
 /**
  * Subclass of {@link Varargs} that represents a lua tail call 
  * in a Java library function execution environment. 
@@ -56,14 +59,14 @@ public class TailcallVarargs extends Varargs {
 		this.args = LuaValue.varargsOf(object, args);
 	}
 	
-	public boolean isTailcall() {
+	public boolean isTailCall() {
 		return true;
 	}
 	
 	public Varargs eval() {
 		while ( result == null ) {
 			Varargs r = func.onInvoke(args);
-			if (r.isTailcall()) {
+			if (r.isTailCall()) {
 				TailcallVarargs t = (TailcallVarargs) r;
 				func = t.func;
 				args = t.args;

@@ -19,8 +19,10 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
+
+import org.luaj.vm2.Prototype;
 
 /** Upvalue used with Closure formulation
  * <p>

@@ -21,6 +21,8 @@
  ******************************************************************************/
 package org.luaj.vm2;
 
+import org.luaj.vm2.core.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -93,14 +95,11 @@ public class Print extends Lua {
 			ps.print("null");
 			return;
 		}
-		switch (v.type()) {
-			case LuaValue.TSTRING:
-				printString(ps, (LuaString) v);
-				break;
-			default:
-				ps.print(v.tojstring());
-
-		}
+        if (v.getType() == LuaType.STRING) {
+            printString(ps, (LuaString) v);
+        } else {
+            ps.print(v.tojstring());
+        }
 	}
 
 	static void printConstant(PrintStream ps, Prototype f, int i) {
@@ -413,25 +412,23 @@ public class Print extends Lua {
 			if (v == null)
 				ps.print(STRING_FOR_NULL);
 			else
-				switch (v.type()) {
-					case LuaValue.TSTRING:
+				switch (v.getType()) {
+					case LuaType.STRING:
 						LuaString s = v.checkstring();
 						ps.print(s.length() < 48? s.tojstring()
 							: s.substring(0, 32).tojstring() + "...+" + (s.length()-32) + "b");
 						break;
-					case LuaValue.TFUNCTION:
-						ps.print(v.tojstring());
-						break;
-					case LuaValue.TUSERDATA:
+					case LuaType.USERDATA:
 						Object o = v.touserdata();
 						if (o != null) {
 							String n = o.getClass().getName();
 							n = n.substring(n.lastIndexOf('.')+1);
 							ps.print(n + ": " + Integer.toHexString(o.hashCode()));
 						} else {
-							ps.print(v.toString());
+							ps.print(v);
 						}
 						break;
+					case LuaType.FUNCTION:
 					default:
 						ps.print(v.tojstring());
 				}

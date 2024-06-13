@@ -19,15 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 import java.lang.ref.WeakReference;
 
-import org.luaj.vm2.LuaTable.Slot;
-import org.luaj.vm2.LuaTable.StrongSlot;
+import org.luaj.vm2.core.LuaTable.Slot;
+import org.luaj.vm2.core.LuaTable.StrongSlot;
 
 /**
- * Subclass of {@link LuaTable} that provides weak key and weak value semantics. 
+ * Subclass of {@link LuaTable} that provides weak key and weak value semantics.
  * <p> 
  * Normally these are not created directly, but indirectly when changing the mode 
  * of a {@link LuaTable} as lua script executes.  
@@ -305,12 +305,12 @@ public class WeakTable implements Metatable {
 	 * @return {@link LuaValue} that is a strong or weak reference, depending on type of {@code value}
 	 */
 	protected static LuaValue weaken(LuaValue value ) {
-		switch ( value.type() ) {
-			case LuaValue.TFUNCTION:
-			case LuaValue.TTHREAD:
-			case LuaValue.TTABLE:
+		switch (value.getType()) {
+			case FUNCTION:
+			case THREAD:
+			case TABLE:
 				return new WeakValue(value);
-			case LuaValue.TUSERDATA:
+			case USERDATA:
 				return new WeakUserdata(value);
 			default:
 				return value;
@@ -343,13 +343,9 @@ public class WeakTable implements Metatable {
 			ref = new WeakReference(value);
 		}
 
-		public int type() {
-			illegal("type","weak value");
-			return 0;
-		}
-
-		public String typename() {
-			illegal("typename","weak value");
+		@Override
+		public LuaType getType() {
+			illegalOperationError("type","weak value");
 			return null;
 		}
 

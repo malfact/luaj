@@ -1,4 +1,4 @@
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 class NonTableMetatable implements Metatable {
 

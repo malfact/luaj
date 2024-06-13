@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 /**
  * Extension of {@link LuaValue} which can hold a Java boolean as its value.
@@ -58,13 +58,8 @@ public final class LuaBoolean extends LuaValue {
 	}
 
 	@Override
-	public int type() {
-		return LuaValue.TBOOLEAN;
-	}
-
-	@Override
-	public String typename() {
-		return "boolean";
+	public LuaType getType() {
+		return LuaType.BOOLEAN;
 	}
 
 	@Override

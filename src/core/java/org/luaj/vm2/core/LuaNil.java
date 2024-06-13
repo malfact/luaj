@@ -19,7 +19,9 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
+
+import org.luaj.vm2.*;
 
 /**
  * Class to encapsulate behavior of the singleton instance {@code nil} 
@@ -45,16 +47,13 @@ public class LuaNil extends LuaValue {
 	
 	LuaNil() {}
 
-	public int type() {
-		return LuaValue.TNIL;
+	@Override
+	public LuaType getType() {
+		return LuaType.NIL;
 	}
 
 	public String toString() {
 		return "nil";		
-	}
-	
-	public String typename() {
-		return "nil";
 	}
 	
 	public String tojstring() {
@@ -82,7 +81,7 @@ public class LuaNil extends LuaValue {
 	}
 
 	public LuaValue checknotnil() {
-		return argerror("value");
+		return argumentError("value");
 	}
 	
 	public boolean isvalidkey() {
@@ -91,15 +90,15 @@ public class LuaNil extends LuaValue {
 
 	// optional argument conversions - nil alwas falls badk to default value
 	public boolean     optboolean(boolean defval)          { return defval; }
-	public LuaClosure  optclosure(LuaClosure defval)       { return defval; }
+	public LuaClosure optclosure(LuaClosure defval)       { return defval; }
 	public double      optdouble(double defval)               { return defval; }
 	public LuaFunction optfunction(LuaFunction defval)     { return defval; }
 	public int         optint(int defval)                  { return defval; }
-	public LuaInteger  optinteger(LuaInteger defval)       { return defval; }
+	public LuaInteger optinteger(LuaInteger defval)       { return defval; }
 	public long        optlong(long defval)                { return defval; }
-	public LuaNumber   optnumber(LuaNumber defval)         { return defval; }
-	public LuaTable    opttable(LuaTable defval)           { return defval; }
-	public LuaThread   optthread(LuaThread defval)         { return defval; }
+	public LuaNumber optnumber(LuaNumber defval)         { return defval; }
+	public LuaTable opttable(LuaTable defval)           { return defval; }
+	public LuaThread optthread(LuaThread defval)         { return defval; }
 	public String      optjstring(String defval)            { return defval; }
 	public LuaString   optstring(LuaString defval)         { return defval; }
 	public Object      optuserdata(Object defval)          { return defval; }

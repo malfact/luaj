@@ -27,8 +27,11 @@ import java.io.Reader;
 import java.util.Hashtable;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.LuaClosure;
+import org.luaj.vm2.core.LuaFunction;
+import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.compiler.LuaC;
+import org.luaj.vm2.util.Globals;
 
 /**
  * Implementation of {@link Globals.Compiler} which does direct
@@ -36,7 +39,7 @@ import org.luaj.vm2.compiler.LuaC;
  * <p>
  * By default, when using {@link org.luaj.vm2.lib.jse.JsePlatform} or
  * to construct globals, the plain compiler {@link LuaC} is installed and lua code 
- * will only be compiled into lua bytecode and execute as {@link LuaClosure}. 
+ * will only be compiled into lua bytecode and execute as {@link LuaClosure}.
  * <p>
  * To override the default compiling behavior with {@link LuaJC}
  * lua-to-java bytecode compiler, install it before undumping code, 

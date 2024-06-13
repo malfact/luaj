@@ -19,7 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
+
+import org.luaj.vm2.*;
 
 import java.lang.ref.WeakReference;
 import java.util.Vector;
@@ -143,15 +145,12 @@ public class LuaTable extends LuaValue implements Metatable {
 		for ( int i=1; i<=n; i++ )
 			set(i, varargs.arg(i+nskip));
 	}
-	
-	public int type() {
-		return TTABLE;
+
+	@Override
+	public LuaType getType() {
+		return LuaType.TABLE;
 	}
 
-	public String typename() {
-		return "table";
-	}
-	
 	public boolean istable() {
 		return true;
 	}
@@ -506,15 +505,15 @@ public class LuaTable extends LuaValue implements Metatable {
 	 * @return the slot index
 	 */
 	public static int hashSlot(LuaValue key, int hashMask ) {
-		switch ( key.type() ) {
-		case TNUMBER:
-		case TTABLE:
-		case TTHREAD:
-		case TLIGHTUSERDATA:
-		case TUSERDATA:
-			return hashmod( key.hashCode(), hashMask );
-		default:
-			return hashpow2( key.hashCode(), hashMask );
+		switch (key.getType()) {
+			case NUMBER:
+			case TABLE:
+			case THREAD:
+			case LIGHT_USERDATA:
+			case USERDATA:
+				return hashmod( key.hashCode(), hashMask );
+			default:
+				return hashpow2( key.hashCode(), hashMask );
 		}
 	}
 	
@@ -755,21 +754,21 @@ public class LuaTable extends LuaValue implements Metatable {
 	}
 
 	protected static boolean isLargeKey(LuaValue key) {
-		switch (key.type()) {
-		case TSTRING:
-			return key.rawlen() > LuaString.RECENT_STRINGS_MAX_LENGTH;
-		case TNUMBER:
-		case TBOOLEAN:
-			return false;
-		default:
-			return true;
+		switch (key.getType()) {
+			case STRING:
+				return key.rawlen() > LuaString.RECENT_STRINGS_MAX_LENGTH;
+			case NUMBER:
+			case BOOLEAN:
+				return false;
+			default:
+				return true;
 		}
 	}
 
 	protected static Entry defaultEntry(LuaValue key, LuaValue value) {
 		if ( key.isinttype() ) {
 			return new IntKeyEntry( key.toint(), value );
-		} else if (value.type() == TNUMBER) {
+		} else if (value.getType() == LuaType.NUMBER) {
 			return new NumberValueEntry( key, value.todouble() );
 		} else {
 			return new NormalEntry( key, value );
@@ -1236,7 +1235,7 @@ public class LuaTable extends LuaValue implements Metatable {
 		}
 
 		public Entry set(LuaValue value) {
-			if (value.type() == TNUMBER) {
+			if (value.getType() == LuaType.NUMBER) {
 				LuaValue n = value.tonumber();
 				if (!n.isnil()) {
 					this.value = n.todouble();

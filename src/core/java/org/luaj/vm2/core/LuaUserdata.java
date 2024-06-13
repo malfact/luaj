@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 
 public class LuaUserdata extends LuaValue {
@@ -39,16 +39,13 @@ public class LuaUserdata extends LuaValue {
 	public String tojstring() {
 		return String.valueOf(m_instance);
 	}
-	
-	public int type() {
-		return TUSERDATA;
-	}
-	
-	public String typename() {
-		return "userdata";
+
+	@Override
+	public LuaType getType() {
+		return LuaType.USERDATA;
 	}
 
-	public int hashCode() {
+    public int hashCode() {
 		return m_instance.hashCode();
 	}
 	
@@ -63,7 +60,7 @@ public class LuaUserdata extends LuaValue {
 	public Object  optuserdata(Object defval)          { return m_instance; }
 	public Object optuserdata(Class c, Object defval) {
 		if (!c.isAssignableFrom(m_instance.getClass()))
-			typerror(c.getName());
+			typeError(c.getName());
 		return m_instance;
 	}
 	
@@ -83,7 +80,7 @@ public class LuaUserdata extends LuaValue {
 	public Object checkuserdata(Class c) { 
 		if ( c.isAssignableFrom(m_instance.getClass()) )
 			return m_instance;		
-		return typerror(c.getName());
+		return typeError(c.getName());
 	}
 	
 	public LuaValue get(LuaValue key ) {

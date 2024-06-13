@@ -1,8 +1,8 @@
 package org.luaj;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.lib.jse.JseProcess;
 import org.luaj.vm2.luajc.LuaJC;

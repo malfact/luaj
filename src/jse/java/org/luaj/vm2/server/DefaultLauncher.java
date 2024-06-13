@@ -24,9 +24,9 @@ package org.luaj.vm2.server;
 import java.io.InputStream;
 import java.io.Reader;
 
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.Varargs;
+import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.core.Varargs;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
@@ -77,27 +77,27 @@ public class DefaultLauncher implements Launcher {
 		Object return_values[] = new Object[n];
 		for (int i = 0; i < n; ++i) {
 			LuaValue r = results.arg(i+1);
-			switch (r.type()) {
-			case LuaValue.TBOOLEAN:
-				return_values[i] = r.toboolean();
-				break;
-			case LuaValue.TNUMBER:
-				return_values[i] = r.todouble();
-				break;
-			case LuaValue.TINT:
-				return_values[i] = r.toint();
-				break;
-			case LuaValue.TNIL:
-				return_values[i] = null;
-				break;
-			case LuaValue.TSTRING:
-				return_values[i] = r.tojstring();
-				break;
-			case LuaValue.TUSERDATA:
-				return_values[i] = r.touserdata();
-				break;
-			default:
-				return_values[i] = r;
+			switch (r.getType()) {
+				case BOOLEAN:
+					return_values[i] = r.toboolean();
+					break;
+				case NUMBER:
+					return_values[i] = r.todouble();
+					break;
+				case INT:
+					return_values[i] = r.toint();
+					break;
+				case NIL:
+					return_values[i] = null;
+					break;
+				case STRING:
+					return_values[i] = r.tojstring();
+					break;
+				case USERDATA:
+					return_values[i] = r.touserdata();
+					break;
+				default:
+					return_values[i] = r;
 			}
 		}
 		return return_values;

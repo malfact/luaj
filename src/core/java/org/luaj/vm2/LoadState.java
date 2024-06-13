@@ -27,6 +27,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import org.luaj.vm2.compiler.DumpState;
+import org.luaj.vm2.core.*;
+import org.luaj.vm2.util.Globals;
 
 
 /**

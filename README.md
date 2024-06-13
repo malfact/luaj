@@ -1,38 +1,25 @@
-# This is a fork!
+# This is a fork
 
-Compile with: `ant` or `ant jar-jse`
+## `Major Changes:`
+- Switch from `Ant` to `Gradle`
+- Rewriting of the way to bind Java methods to lua functions
+- Removal of *type* constants in `LuaValue.class`
+  - Replaced with enum `LuaType.class`
 
-(this will build only the project for Java Standard Edition)
+## `Planned Changes`
+- Function registration for lua via Functional Interfaces
+- Annotation processing for userdata classes
+- Rework of `VarArgs` to allow for named parameters
+  - This may involve treating varargs as a table and reworking the inheritance tree
 
-Then test with: `./luaj`
 
-(or `luaj.bat` on Windows)
+## `Known Issues:`
+- The `Compatability` test `oslib.lua` fails on the calls to test `os.time`
+  - The test doesn't set a static local, so testing in another time zone will result in failure.
 
-If you need JME support (Java Micro Edition, specifically for mobiles),
-this fork is not recommended.
 
-You can try `ant all` or `ant jar-jme`, but there is no guarantee that it
-will even compile (though that may be fixed in a future version).
-The `TODO` file can contain information about some known issues.
-
-This fork aims to fix some issues met with luaj 3.0.2, still present in 
-[luaj/luaj](https://github.com/luaj/luaj) at
-this time of writing.
-
-Building the version 3.0.2 with recent versions of ant (e.g. 1.10.11) and
-JDK (8+) seems no longer possible.
-
-The `build.xml` file of this fork has been refactored in order to separate
-jme and jse targets, and to upgrade the jse target to more recent versions
-of the JDK (namely 1.8+).
-
-It is now possible to build the jse target alone with: `ant jar-jse`
-
-The `jar-jme` target from 3.0.2 won't be supported until contributors
-experienced with JME be ready to join the project.
-
-The interpreter can be tested with `luaj` (on POSIX systems) or `luaj.bat`
-(on Windows systems). These commands can be passed arguments.
+*Note: Everything below is from the original project and may not work as intended* <br>
+*Guides will be updates when a mostly working build is ready*
 
 # Original README.md
 
@@ -654,7 +641,7 @@ All lua value manipulation is now organized around
 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaValue.html">LuaValue</a>
 which exposes the majority of interfaces used for lua computation.  
 <pre>
-	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaValue.html">org.luaj.vm2.LuaValue</a>
+	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaValue.html">org.luaj.vm2.core.LuaValue</a>
 </pre>
 
 <h3>Common Functions</h3>
@@ -682,7 +669,7 @@ both a variable argument list and multiple return values.
 For convenience, <em>LuaValue</em> implements <em>Varargs</em> so a single value can be supplied anywhere 
 variable arguments are expected.      
 <pre>
-	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/Varargs.html">org.luaj.vm2.Varargs</a>
+	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/Varargs.html">org.luaj.vm2.core.Varargs</a>
 </pre>
 
 <h3>Common Functions</h3>
@@ -760,7 +747,7 @@ in the environment that can be called from lua.
 <p>
 A complete example of Java code for a simple toy library is in <a href="examples/jse/hyperbolic.java">examples/jse/hyperbolic.java</a> 
 <pre>
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.lib.*;
 
 public class hyperbolic extends TwoArgFunction {
@@ -811,7 +798,7 @@ For this example to work the code in <em>hyperbolic.java</em> must be compiled a
 Closures still exist in this framework, but are optional, and are only used to implement lua bytecode execution, 
 and is generally not directly manipulated by the user of luaj.
 <p>
-See the <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaClosure.html">org.luaj.vm2.LuaClosure</a> 
+See the <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaClosure.html">org.luaj.vm2.core.LuaClosure</a> 
 javadoc for details on using that class directly. 
 
 <h1>6 - <a name="6">Parser</a></h1>

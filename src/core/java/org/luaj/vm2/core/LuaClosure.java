@@ -19,10 +19,12 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
+import org.luaj.vm2.*;
 import org.luaj.vm2.lib.DebugLib;
 import org.luaj.vm2.compiler.LuaC;
+import org.luaj.vm2.util.Globals;
 
 /**
  * Extension of {@link LuaFunction} which executes lua bytecode.

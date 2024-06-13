@@ -1,7 +1,7 @@
 package org.luaj.luajc;
 
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.Varargs;
+import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.core.Varargs;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 

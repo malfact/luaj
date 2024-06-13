@@ -2,7 +2,7 @@ package org.luaj.vm2.ast;
 
 import java.util.List;
 
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.ast.Exp.Constant;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.Exp.VarExp;

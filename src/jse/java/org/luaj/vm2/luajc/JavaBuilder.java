@@ -51,7 +51,7 @@ import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.PUSH;
 import org.apache.bcel.generic.Type;
 import org.luaj.vm2.*;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.*;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
@@ -652,31 +652,31 @@ public class JavaBuilder {
 		append(factory.createFieldAccess(protoname, destname, uptype, Constants.PUTFIELD));
 	}
 	
-	private Map<LuaValue,String> constants = new HashMap<LuaValue,String>();
+	private final Map<LuaValue,String> constants = new HashMap<>();
 	
 	public void loadConstant(LuaValue value) {
-		switch ( value.type() ) {
-		case LuaValue.TNIL:
-			loadNil();
-			break;
-		case LuaValue.TBOOLEAN:
-			loadBoolean( value.toboolean() );
-			break;
-		case LuaValue.TNUMBER:
-		case LuaValue.TSTRING:
-			String name = (String) constants.get(value);
-			if ( name == null ) {
-				name = value.type() == LuaValue.TNUMBER?
-						value.isinttype()? 
-							createLuaIntegerField(value.checkint()):
-							createLuaDoubleField(value.checkdouble()):
-						createLuaStringField(value.checkstring());
-				constants.put(value, name);
-			}
-			append(factory.createGetStatic(classname, name, TYPE_LUAVALUE));
-			break;
-		default:
-			throw new IllegalArgumentException("bad constant type: "+value.type());
+		switch (value.getType() ) {
+			case NIL:
+				loadNil();
+				break;
+			case BOOLEAN:
+				loadBoolean( value.toboolean() );
+				break;
+			case NUMBER:
+			case STRING:
+				String name = constants.get(value);
+				if ( name == null ) {
+					name = value.getType() == LuaType.NUMBER ?
+							value.isinttype()?
+								createLuaIntegerField(value.checkint()):
+								createLuaDoubleField(value.checkdouble()):
+							createLuaStringField(value.checkstring());
+					constants.put(value, name);
+				}
+				append(factory.createGetStatic(classname, name, TYPE_LUAVALUE));
+				break;
+			default:
+				throw new IllegalArgumentException("bad constant type: "+value.getType().typeName);
 		}
 	}
 

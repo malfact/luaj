@@ -21,6 +21,8 @@
  ******************************************************************************/
 package org.luaj.vm2;
 
+import org.luaj.vm2.core.LuaThread;
+
 /**
  * {@link java.lang.Error} sublcass that indicates a lua thread that is no
  * longer referenced has been detected.

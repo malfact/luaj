@@ -22,7 +22,9 @@
 package org.luaj.vm2.compiler;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.LuaError;
+import org.luaj.vm2.core.LuaString;
+import org.luaj.vm2.core.LuaValue;
 
 /**
  * Constants used by the LuaC compiler and related classes.

@@ -19,9 +19,11 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
 
+import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.OrphanedThread;
 import org.luaj.vm2.lib.CoroutineLib;
 
 import java.lang.ref.WeakReference;
@@ -35,7 +37,7 @@ import java.lang.ref.WeakReference;
  * <p>
  * The threads must be initialized with the globals, so that 
  * the global environment may be passed along according to rules of lua. 
- * This is done via the constructor arguments {@link #LuaThread(Globals)} or 
+ * This is done via the constructor arguments {@link #LuaThread(Globals)} or
  * {@link #LuaThread(Globals, LuaValue)}.
  * <p> 
  * The utility classes {@link org.luaj.vm2.lib.jse.JsePlatform} and
@@ -47,7 +49,7 @@ import java.lang.ref.WeakReference;
  * <p>
  * Each Java thread wakes up at regular intervals and checks a weak reference
  * to determine if it can ever be resumed.  If not, it throws 
- * {@link OrphanedThread} which is an {@link java.lang.Error}. 
+ * {@link OrphanedThread} which is an {@link java.lang.Error}.
  * Applications should not catch {@link OrphanedThread}, because it can break
  * the thread safety of luaj.  The value controlling the polling interval 
  * is {@link #thread_orphan_check_interval} and may be set by the user.
@@ -123,16 +125,13 @@ public class LuaThread extends LuaValue {
 		state = new State(globals, this, func);
 		this.globals = globals;
 	}
-	
-	public int type() {
-		return TTHREAD;
+
+	@Override
+	public LuaType getType() {
+		return LuaType.THREAD;
 	}
-	
-	public String typename() {
-		return "thread";
-	}
-	
-	public boolean isthread() {
+
+    public boolean isthread() {
 		return true;
 	}
 	

@@ -26,9 +26,11 @@ import java.io.*;
 import javax.script.*;
 
 import org.luaj.vm2.*;
+import org.luaj.vm2.core.*;
 import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.util.Globals;
 
 /**
  * Implementation of the ScriptEngine interface which can compile and execute
@@ -239,14 +241,19 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	}
 
 	static private Object toJava(LuaValue luajValue) {
-		switch ( luajValue.type() ) {
-		case LuaValue.TNIL: return null;
-		case LuaValue.TSTRING: return luajValue.tojstring();
-		case LuaValue.TUSERDATA: return luajValue.checkuserdata(Object.class);
-		case LuaValue.TNUMBER: return luajValue.isinttype()?
+		switch ( luajValue.getType() ) {
+			case NIL:
+				return null;
+			case STRING:
+				return luajValue.tojstring();
+			case USERDATA:
+				return luajValue.checkuserdata(Object.class);
+			case NUMBER:
+				return luajValue.isinttype() ?
 				(Object) Integer.valueOf(luajValue.toint()): 
 				(Object) Double.valueOf(luajValue.todouble());
-		default: return luajValue;
+			default:
+				return luajValue;
 		}
 	}
 

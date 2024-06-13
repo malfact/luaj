@@ -19,12 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-package org.luaj.vm2;
+package org.luaj.vm2.core;
 
-/** 
+import org.luaj.vm2.Buffer;
+import org.luaj.vm2.LuaDouble;
+import org.luaj.vm2.LuaInteger;
+
+/**
  * Base class for representing numbers as lua values directly. 
  * <p>
- * The main subclasses are {@link LuaInteger} which holds values that fit in a java int, 
+ * The main subclasses are {@link LuaInteger} which holds values that fit in a java int,
  * and {@link LuaDouble} which holds all other number values.
  * @see LuaInteger
  * @see LuaDouble
@@ -36,13 +40,10 @@ public class LuaNumber extends LuaValue {
 
 	/** Shared static metatable for all number values represented in lua. */
 	public static LuaValue s_metatable;
-	
-	public int type() {
-		return TNUMBER;
-	}
-	
-	public String typename() {
-		return "number";
+
+    @Override
+	public LuaType getType() {
+		return LuaType.NUMBER;
 	}
 	
 	public LuaNumber checknumber() {
@@ -74,7 +75,7 @@ public class LuaNumber extends LuaValue {
 	}
 
 	public LuaValue concat(LuaValue rhs)      { return rhs.concatTo(this); }
-	public Buffer   concat(Buffer rhs)        { return rhs.concatTo(this); }
+	public Buffer concat(Buffer rhs)        { return rhs.concatTo(this); }
 	public LuaValue concatTo(LuaNumber lhs)   { return strvalue().concatTo(lhs.strvalue()); }
 	public LuaValue concatTo(LuaString lhs)   { return strvalue().concatTo(lhs); }
 

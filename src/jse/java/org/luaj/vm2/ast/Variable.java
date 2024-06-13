@@ -21,7 +21,7 @@
 ******************************************************************************/
 package org.luaj.vm2.ast;
 
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.core.LuaValue;
 
 /** Variable is created lua name scopes, and is a named, lua variable that
  * either refers to a lua local, global, or upvalue storage location.  

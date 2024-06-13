@@ -1,7 +1,7 @@
 package org.luaj;
 
 import org.junit.jupiter.api.*;
-import org.luaj.vm2.*;
+import org.luaj.vm2.core.*;
 import org.luaj.vm2.luajc.LuaJC;
 
 public class CompatibilityTest {

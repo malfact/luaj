@@ -1,9 +1,5 @@
 package org.luaj.vm2.core;
 
-import org.luaj.vm2.LuaFunction;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.Varargs;
-
 public class BoundLuaFunction extends LuaFunction {
     protected final String name;
     protected final JavaFunction function;
