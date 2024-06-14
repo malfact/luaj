@@ -22,6 +22,8 @@
 package org.luaj.vm2.core;
 
 
+import org.luaj.vm2.util.LuaConstant;
+
 public class LuaUserdata extends LuaValue {
 	
 	public Object m_instance;
@@ -84,7 +86,7 @@ public class LuaUserdata extends LuaValue {
 	}
 	
 	public LuaValue get(LuaValue key ) {
-		return m_metatable!=null? gettable(this,key): NIL;
+		return m_metatable!=null? gettable(this,key): LuaConstant.NIL;
 	}
 	
 	public void set(LuaValue key, LuaValue value ) {
@@ -102,7 +104,7 @@ public class LuaUserdata extends LuaValue {
 	}
 
 	// equality w/ metatable processing
-	public LuaValue eq(LuaValue val )     { return eq_b(val)? TRUE: FALSE; }
+	public LuaValue eq(LuaValue val )     { return eq_b(val)? LuaConstant.TRUE: LuaConstant.FALSE; }
 	public boolean eq_b( LuaValue val ) {
 		if ( val.raweq(this) ) return true;
 		if ( m_metatable == null || !val.isuserdata() ) return false;

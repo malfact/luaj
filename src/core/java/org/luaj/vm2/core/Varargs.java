@@ -22,6 +22,7 @@
 package org.luaj.vm2.core;
 
 import org.luaj.vm2.*;
+import org.luaj.vm2.util.LuaConstant;
 
 /**
  * Class to encapsulate varargs values, either as part of a variable argument list, or multiple return values.
@@ -60,7 +61,7 @@ public abstract class Varargs {
 	 * @param i the index of the argument to get, 1 is the first argument
 	 * @return Value at position i, or LuaValue.NIL if there is none.
 	 * @see Varargs#arg1()
-	 * @see LuaValue#NIL
+	 * @see LuaConstant#NIL
 	 */
 	abstract public LuaValue arg(int i );
 	
@@ -74,7 +75,7 @@ public abstract class Varargs {
 	 * Get the first argument in the list.
 	 * @return LuaValue which is first in the list, or LuaValue.NIL if there are no values.
 	 * @see Varargs#arg(int)
-	 * @see LuaValue#NIL
+	 * @see LuaConstant#NIL
 	 */
 	abstract public LuaValue arg1();
 
@@ -521,7 +522,7 @@ public abstract class Varargs {
 		}
 		public LuaValue arg(int i) {
 			i += start-1;
-			return i>=start && i<=end? v.arg(i): LuaValue.NIL;
+			return i>=start && i<=end? v.arg(i): LuaConstant.NIL;
 		}
 		public LuaValue arg1() {
 			return v.arg(start);
@@ -535,7 +536,7 @@ public abstract class Varargs {
 			final int newstart = this.start + start - 1;
 			if (start > 0) {
 				if (newstart >= this.end)
-					return LuaValue.NONE;
+					return LuaConstant.NONE;
 				if (newstart == this.end)
 					return v.arg(this.end);
 				if (newstart == this.end-1)
@@ -611,7 +612,7 @@ public abstract class Varargs {
 			this.r = r ;
 		}
 		public LuaValue arg(int i) {
-			return i < 1 ? LuaValue.NIL: i <= v.length? v[i - 1]: r.arg(i-v.length);
+			return i < 1 ? LuaConstant.NIL: i <= v.length? v[i - 1]: r.arg(i-v.length);
 		}
 		public int count() {
 			return v.length+r.count();
@@ -657,7 +658,7 @@ public abstract class Varargs {
 			this.v = v;
 			this.offset = offset;
 			this.length = length;
-			this.more = LuaValue.NONE;
+			this.more = LuaConstant.NONE;
 		}
 		/** Construct a Varargs from an array of LuaValue and additional arguments.
 		 * <p>
@@ -673,7 +674,7 @@ public abstract class Varargs {
 			this.more = more;
 		}
 		public LuaValue arg(final int i) {
-			return i < 1? LuaValue.NIL: i <= length? v[offset+i-1]: more.arg(i-length);
+			return i < 1? LuaConstant.NIL: i <= length? v[offset+i-1]: more.arg(i-length);
 		}
 		public int count() {
 			return length + more.count();
@@ -715,13 +716,13 @@ public abstract class Varargs {
 	public Varargs dealias() {
 		int n = count();
 		switch (n) {
-		case 0: return LuaValue.NONE;
+		case 0: return LuaConstant.NONE;
 		case 1: return arg1();
 		case 2: return new PairVarargs(arg1(), arg(2));
 		default:
 			LuaValue[] v = new LuaValue[n];
 			copyto(v, 0, n);
-			return new ArrayVarargs(v, LuaValue.NONE);
+			return new ArrayVarargs(v, LuaConstant.NONE);
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package org.luaj.vm2.core;
 
+import org.luaj.vm2.util.LuaConstant;
+
 public class BoundLuaFunction extends LuaFunction {
     protected final String name;
     protected final JavaFunction function;
@@ -11,7 +13,7 @@ public class BoundLuaFunction extends LuaFunction {
 
     @Override
     public LuaValue call() {
-        return invoke(NONE).arg(1);
+        return invoke(LuaConstant.NONE).arg(1);
     }
 
     @Override

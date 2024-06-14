@@ -36,6 +36,7 @@ import org.luaj.vm2.core.Varargs;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
 import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.util.LuaConstant;
 
 
 /**
@@ -213,7 +214,7 @@ public class lua {
 
 	private static Varargs setGlobalArg(String chunkname, String[] args, int i, LuaValue globals) {
 		if (args == null)
-			return LuaValue.NONE;
+			return LuaConstant.NONE;
 		LuaTable arg = LuaValue.tableOf();
 		for ( int j=0; j<args.length; j++ )
 			arg.set( j-i, LuaValue.valueOf(args[j]) );

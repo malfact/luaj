@@ -26,6 +26,7 @@ import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.Print;
 import org.luaj.vm2.Prototype;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.luaj.vm2.util.LuaConstant;
 
 /** Test the plain old bytecode interpreter */
 public class TestLuaJ {
@@ -56,7 +57,7 @@ public class TestLuaJ {
 		print( chunk.checkclosure().p );
 
 		// The chunk can be called with arguments as desired.
-		chunk.call(LuaValue.ZERO, LuaValue.ONE);
+		chunk.call(LuaConstant.ZERO, LuaConstant.ONE);
 	}
 
 	private static void print(Prototype p) {

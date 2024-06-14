@@ -5,6 +5,7 @@ import org.luaj.vm2.ast.*;
 import java.util.*;
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.core.LuaString;
+import org.luaj.vm2.util.LuaConstant;
 
 public class LuaParser implements LuaParserConstants {
   static {
@@ -623,15 +624,15 @@ public class LuaParser implements LuaParserConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case NIL:
       jj_consume_token(NIL);
-                                                  e=Exp.constant(LuaValue.NIL); L(e,i); {if (true) return e;}
+                                                  e=Exp.constant(LuaConstant.NIL); L(e,i); {if (true) return e;}
       break;
     case TRUE:
       jj_consume_token(TRUE);
-                                                  e=Exp.constant(LuaValue.TRUE); L(e,i); {if (true) return e;}
+                                                  e=Exp.constant(LuaConstant.TRUE); L(e,i); {if (true) return e;}
       break;
     case FALSE:
       jj_consume_token(FALSE);
-                                                  e=Exp.constant(LuaValue.FALSE); L(e,i); {if (true) return e;}
+                                                  e=Exp.constant(LuaConstant.FALSE); L(e,i); {if (true) return e;}
       break;
     case NUMBER:
       n = jj_consume_token(NUMBER);

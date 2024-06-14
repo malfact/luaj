@@ -29,6 +29,7 @@ import java.io.InputStream;
 import org.luaj.vm2.compiler.DumpState;
 import org.luaj.vm2.core.*;
 import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.util.LuaConstant;
 
 
 /**
@@ -236,7 +237,7 @@ public class LoadState {
 	 */
 	public static LuaValue longBitsToLuaNumber(long bits ) {
 		if ( ( bits & ( ( 1L << 63 ) - 1 ) ) == 0L ) {
-			return LuaValue.ZERO;
+			return LuaConstant.ZERO;
 		}
 		
 		int e = (int)((bits >> 52) & 0x7ffL) - 1023;
@@ -278,10 +279,10 @@ public class LoadState {
 		for ( int i=0; i<n; i++ ) {
 			switch ( is.readByte() ) {
 			case LUA_TNIL:
-				values[i] = LuaValue.NIL;
+				values[i] = LuaConstant.NIL;
 				break;
 			case LUA_TBOOLEAN:
-				values[i] = (0 != is.readUnsignedByte()? LuaValue.TRUE: LuaValue.FALSE);
+				values[i] = (0 != is.readUnsignedByte()? LuaConstant.TRUE: LuaConstant.FALSE);
 				break;
 			case LUA_TINT:
 				values[i] = LuaInteger.valueOf( loadInt() );

@@ -31,6 +31,7 @@ import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.util.LuaConstant;
 
 /**
  * Implementation of the ScriptEngine interface which can compile and execute
@@ -172,7 +173,7 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 				}
 				f.initupvalue1(g);
 			}
-			return toJava(f.invoke(LuaValue.NONE));
+			return toJava(f.invoke(LuaConstant.NONE));
 		}
 	}
 
@@ -208,7 +209,7 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	static class BindingsMetatable extends LuaTable {
 
 		BindingsMetatable(final Bindings bindings) {
-			this.rawset(LuaValue.INDEX, new TwoArgFunction() {
+			this.rawset(LuaConstant.MetaTag.INDEX, new TwoArgFunction() {
 				public LuaValue call(LuaValue table, LuaValue key) {
 					if (key.isstring()) 
 						return toLua(bindings.get(key.tojstring()));
@@ -216,7 +217,7 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 						return this.rawget(key);
 				}
 			});
-			this.rawset(LuaValue.NEWINDEX, new ThreeArgFunction() {
+			this.rawset(LuaConstant.MetaTag.NEWINDEX, new ThreeArgFunction() {
 				public LuaValue call(LuaValue table, LuaValue key, LuaValue value) {
 					if (key.isstring()) {
 						final String k = key.tojstring();
@@ -228,14 +229,14 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 					} else {
 						this.rawset(key, value);
 					}
-					return LuaValue.NONE;
+					return LuaConstant.NONE;
 				}
 			});
 		}
 	}
 	
 	static private LuaValue toLua(Object javaValue) {
-		return javaValue == null? LuaValue.NIL:
+		return javaValue == null? LuaConstant.NIL:
 			javaValue instanceof LuaValue ? (LuaValue) javaValue:
 			CoerceJavaToLua.coerce(javaValue);
 	}

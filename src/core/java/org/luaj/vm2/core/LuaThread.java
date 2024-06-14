@@ -25,6 +25,7 @@ package org.luaj.vm2.core;
 import org.luaj.vm2.util.Globals;
 import org.luaj.vm2.OrphanedThread;
 import org.luaj.vm2.lib.CoroutineLib;
+import org.luaj.vm2.util.LuaConstant;
 
 import java.lang.ref.WeakReference;
 
@@ -158,7 +159,7 @@ public class LuaThread extends LuaValue {
 	public Varargs resume(Varargs args) {
 		final LuaThread.State s = this.state;
 		if (s.status > LuaThread.STATUS_SUSPENDED)
-			return varargsOf(FALSE,
+			return varargsOf(LuaConstant.FALSE,
 					valueOf("cannot resume "+(s.status==LuaThread.STATUS_DEAD? "dead": "non-suspended")+" coroutine"));
 		return s.lua_resume(this, args);
 	}
@@ -167,8 +168,8 @@ public class LuaThread extends LuaValue {
 		private final Globals globals;
 		final WeakReference lua_thread;
 		public final LuaValue function;
-		Varargs args = NONE;
-		Varargs result = NONE;
+		Varargs args = LuaConstant.NONE;
+		Varargs result = LuaConstant.NONE;
 		String error = null;
 
 		/** Hook function control state used by debug lib. */
@@ -193,7 +194,7 @@ public class LuaThread extends LuaValue {
 		public synchronized void run() {
 			try {
 				Varargs a = this.args;
-				this.args = NONE;
+				this.args = LuaConstant.NONE;
 				this.result = function.invoke(a);
 			} catch (Throwable t) {
 				this.error = t.getMessage();
@@ -219,13 +220,13 @@ public class LuaThread extends LuaValue {
 				this.status = STATUS_RUNNING;
 				this.wait();
 				return (this.error != null? 
-					varargsOf(FALSE, valueOf(this.error)):
-					varargsOf(TRUE, this.result));
+					varargsOf(LuaConstant.FALSE, valueOf(this.error)):
+					varargsOf(LuaConstant.TRUE, this.result));
 			} catch (InterruptedException ie) {
 				throw new OrphanedThread();
 			} finally {
-				this.args = NONE;
-				this.result = NONE;
+				this.args = LuaConstant.NONE;
+				this.result = LuaConstant.NONE;
 				this.error = null;
 				globals.running = previous_thread;
 				if (previous_thread != null)
@@ -250,8 +251,8 @@ public class LuaThread extends LuaValue {
 				this.status = STATUS_DEAD;
 				throw new OrphanedThread();
 			} finally {
-				this.args = NONE;
-				this.result = NONE;
+				this.args = LuaConstant.NONE;
+				this.result = LuaConstant.NONE;
 			}
 		}
 	}

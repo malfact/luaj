@@ -4,6 +4,7 @@ import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.core.Varargs;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
+import org.luaj.vm2.util.LuaConstant;
 
 public class SampleMainChunk extends VarArgFunction {
 
@@ -53,7 +54,7 @@ public class SampleMainChunk extends VarArgFunction {
 		}
 
 		public LuaValue call(LuaValue arg1, LuaValue arg2) {
-			return NIL;
+			return LuaConstant.NIL;
 		}
 		
 	}

@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 
 import org.luaj.vm2.core.LuaTable.Slot;
 import org.luaj.vm2.core.LuaTable.StrongSlot;
+import org.luaj.vm2.util.LuaConstant;
 
 /**
  * Subclass of {@link LuaTable} that provides weak key and weak value semantics.
@@ -52,7 +53,7 @@ public class WeakTable implements Metatable {
 			return LuaTable.tableOf();
 		}
 		LuaTable table = LuaTable.tableOf();
-		LuaTable mt = LuaTable.tableOf(new LuaValue[] { LuaValue.MODE, mode });
+		LuaTable mt = LuaTable.tableOf(new LuaValue[] { LuaConstant.MetaTag.MODE, mode });
 		table.setmetatable(mt);
 		return table;
 	}

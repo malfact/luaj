@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.util.Hashtable;
 
 import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.util.LuaConstant;
 
 
 public class LexState extends Constants {
@@ -295,7 +296,7 @@ public class LexState extends Constants {
 		this.linenumber = 1;
 		this.lastline = 1;
 		this.source = source;
-		this.envn = LuaValue.ENV;  /* environment variable name */
+		this.envn = LuaConstant.ENV;  /* environment variable name */
 		this.nbuff = 0;   /* initialize buffer */
 		this.current = firstByte; /* read first char */
 		this.skipShebang();
@@ -344,11 +345,11 @@ public class LexState extends Constants {
 		}
 		/* Check for "0x" */
 		if (s + 2 >= c.length )
-			return LuaValue.ZERO;
+			return LuaConstant.ZERO;
 		if (c[s++] != '0')
-			return LuaValue.ZERO;
+			return LuaConstant.ZERO;
 		if (c[s] != 'x' && c[s] != 'X')
-			return LuaValue.ZERO;
+			return LuaConstant.ZERO;
 		++s;
 
 		// read integer part.
@@ -382,7 +383,7 @@ public class LexState extends Constants {
 	
 	boolean str2d(String str, SemInfo seminfo) {
 		if (str.indexOf('n')>=0 || str.indexOf('N')>=0)
-			seminfo.r = LuaValue.ZERO;
+			seminfo.r = LuaConstant.ZERO;
 		else if (str.indexOf('x')>=0 || str.indexOf('X')>=0)
 			seminfo.r = strx2number(str, seminfo);
 		else {

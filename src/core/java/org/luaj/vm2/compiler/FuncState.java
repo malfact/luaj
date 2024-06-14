@@ -28,6 +28,7 @@ import org.luaj.vm2.core.LuaString;
 import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.compiler.LexState.ConsControl;
 import org.luaj.vm2.compiler.LexState.expdesc;
+import org.luaj.vm2.util.LuaConstant;
 
 
 public class FuncState extends Constants {
@@ -497,11 +498,11 @@ public class FuncState extends Constants {
 	}
 
 	int boolK(boolean b) {
-		return this.addk((b ? LuaValue.TRUE : LuaValue.FALSE));
+		return this.addk((b ? LuaConstant.TRUE : LuaConstant.FALSE));
 	}
 
 	int nilK() {
-		return this.addk(LuaValue.NIL);
+		return this.addk(LuaConstant.NIL);
 	}
 
 	void setreturns(expdesc e, int nresults) {
@@ -864,7 +865,7 @@ public class FuncState extends Constants {
 		LuaValue v1, v2, r;
 		if (!e1.isnumeral() || !e2.isnumeral())
 			return false;
-		if ((op == OP_DIV || op == OP_MOD) && e2.u.nval().eq_b(LuaValue.ZERO))
+		if ((op == OP_DIV || op == OP_MOD) && e2.u.nval().eq_b(LuaConstant.ZERO))
 			    return false;  /* do not attempt to divide by 0 */
 		v1 = e1.u.nval();
 		v2 = e2.u.nval();

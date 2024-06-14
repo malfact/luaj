@@ -32,6 +32,7 @@ import org.luaj.vm2.core.Varargs;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
 import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.util.LuaConstant;
 
 public class TestLuaJC {
 	// This file will be loaded using the finder as a resource, provided it is in the 
@@ -61,7 +62,7 @@ public class TestLuaJC {
 			}
 	
 			// call with arguments
-			Varargs v = f.invoke(LuaValue.NONE);
+			Varargs v = f.invoke(LuaConstant.NONE);
 			
 			// print the result
 			System.out.println("result: "+v);

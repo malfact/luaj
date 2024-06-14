@@ -21,12 +21,14 @@
  ******************************************************************************/
 package org.luaj.vm2.core;
 
+import org.luaj.vm2.util.LuaConstant;
+
 /**
  * Extension of {@link LuaValue} which can hold a Java boolean as its value.
  * <p>
  * These instance are not instantiated directly by clients. Instead, there are
- * exactly twon instances of this class, {@link LuaValue#TRUE} and
- * {@link LuaValue#FALSE} representing the lua values {@code true} and
+ * exactly twon instances of this class, {@link LuaConstant#TRUE} and
+ * {@link LuaConstant#FALSE} representing the lua values {@code true} and
  * {@code false}. The function {@link LuaValue#valueOf(boolean)} will always
  * return one of these two values.
  * <p>
@@ -36,16 +38,16 @@ package org.luaj.vm2.core;
  *
  * @see LuaValue
  * @see LuaValue#valueOf(boolean)
- * @see LuaValue#TRUE
- * @see LuaValue#FALSE
+ * @see LuaConstant#TRUE
+ * @see LuaConstant#FALSE
  */
 public final class LuaBoolean extends LuaValue {
 
 	/** The singleton instance representing lua {@code true} */
-	static final LuaBoolean _TRUE = new LuaBoolean(true);
+	public static final LuaBoolean TRUE = new LuaBoolean(true);
 
 	/** The singleton instance representing lua {@code false} */
-	static final LuaBoolean _FALSE = new LuaBoolean(false);
+	public static final LuaBoolean FALSE = new LuaBoolean(false);
 
 	/** Shared static metatable for boolean values represented in lua. */
 	public static LuaValue s_metatable;
@@ -69,7 +71,7 @@ public final class LuaBoolean extends LuaValue {
 
 	@Override
 	public LuaValue not() {
-		return v? FALSE: LuaValue.TRUE;
+		return v? LuaConstant.FALSE: LuaConstant.TRUE;
 	}
 
 	/**

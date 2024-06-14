@@ -26,6 +26,7 @@ import org.luaj.vm2.Buffer;
 import org.luaj.vm2.LuaDouble;
 import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.lib.MathLib;
+import org.luaj.vm2.util.LuaConstant;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
@@ -265,44 +266,44 @@ public class LuaString extends LuaValue {
 	public LuaValue neg() { double d = scannumber(); return Double.isNaN(d)? super.neg(): valueOf(-d); }
 
 	// basic binary arithmetic
-	public LuaValue add(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(ADD,rhs): rhs.add(d); }
+	public LuaValue add(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(LuaConstant.MetaTag.ADD,rhs): rhs.add(d); }
 	public LuaValue add(double rhs )        { return valueOf( checkarith() + rhs ); }
 	public LuaValue add(int rhs )           { return valueOf( checkarith() + rhs ); }
-	public LuaValue sub(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(SUB,rhs): rhs.subFrom(d); }
+	public LuaValue sub(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(LuaConstant.MetaTag.SUB,rhs): rhs.subFrom(d); }
 	public LuaValue sub(double rhs )        { return valueOf( checkarith() - rhs ); }
 	public LuaValue sub(int rhs )           { return valueOf( checkarith() - rhs ); }
 	public LuaValue subFrom(double lhs )    { return valueOf( lhs - checkarith() ); }
-	public LuaValue mul(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(MUL,rhs): rhs.mul(d); }
+	public LuaValue mul(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(LuaConstant.MetaTag.MUL,rhs): rhs.mul(d); }
 	public LuaValue mul(double rhs )        { return valueOf( checkarith() * rhs ); }
 	public LuaValue mul(int rhs )           { return valueOf( checkarith() * rhs ); }
-	public LuaValue pow(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(POW,rhs): rhs.powWith(d); }
+	public LuaValue pow(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(LuaConstant.MetaTag.POW,rhs): rhs.powWith(d); }
 	public LuaValue pow(double rhs )        { return MathLib.dpow(checkarith(),rhs); }
 	public LuaValue pow(int rhs )           { return MathLib.dpow(checkarith(),rhs); }
 	public LuaValue powWith(double lhs )    { return MathLib.dpow(lhs, checkarith()); }
 	public LuaValue powWith(int lhs )       { return MathLib.dpow(lhs, checkarith()); }
-	public LuaValue div(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(DIV,rhs): rhs.divInto(d); }
+	public LuaValue div(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(LuaConstant.MetaTag.DIV,rhs): rhs.divInto(d); }
 	public LuaValue div(double rhs )        { return LuaDouble.ddiv(checkarith(),rhs); }
 	public LuaValue div(int rhs )           { return LuaDouble.ddiv(checkarith(),rhs); }
 	public LuaValue divInto(double lhs )    { return LuaDouble.ddiv(lhs, checkarith()); }
-	public LuaValue mod(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(MOD,rhs): rhs.modFrom(d); }
+	public LuaValue mod(LuaValue rhs )      { double d = scannumber(); return Double.isNaN(d)? arithmt(LuaConstant.MetaTag.MOD,rhs): rhs.modFrom(d); }
 	public LuaValue mod(double rhs )        { return LuaDouble.dmod(checkarith(), rhs); }
 	public LuaValue mod(int rhs )           { return LuaDouble.dmod(checkarith(), rhs); }
 	public LuaValue modFrom(double lhs )    { return LuaDouble.dmod(lhs, checkarith()); }
 	
 	// relational operators, these only work with other strings
-	public LuaValue lt(LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)>0? TRUE : FALSE) : super.lt(rhs); }
+	public LuaValue lt(LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)>0? LuaConstant.TRUE : LuaConstant.FALSE) : super.lt(rhs); }
 	public boolean lt_b( LuaValue rhs )       { return rhs.isstring() ? rhs.strcmp(this)>0 : super.lt_b(rhs); }
 	public boolean lt_b( int rhs )         { typeError("attempt to compare string with number"); return false; }
 	public boolean lt_b( double rhs )      { typeError("attempt to compare string with number"); return false; }
-	public LuaValue lteq(LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)>=0? TRUE : FALSE) : super.lteq(rhs); }
+	public LuaValue lteq(LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)>=0? LuaConstant.TRUE : LuaConstant.FALSE) : super.lteq(rhs); }
 	public boolean lteq_b( LuaValue rhs )     { return rhs.isstring() ? rhs.strcmp(this)>=0 : super.lteq_b(rhs); }
 	public boolean lteq_b( int rhs )       { typeError("attempt to compare string with number"); return false; }
 	public boolean lteq_b( double rhs )    { typeError("attempt to compare string with number"); return false; }
-	public LuaValue gt(LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)<0? TRUE : FALSE) : super.gt(rhs); }
+	public LuaValue gt(LuaValue rhs )         { return rhs.isstring() ? (rhs.strcmp(this)<0? LuaConstant.TRUE : LuaConstant.FALSE) : super.gt(rhs); }
 	public boolean gt_b( LuaValue rhs )       { return rhs.isstring() ? rhs.strcmp(this)<0 : super.gt_b(rhs); }
 	public boolean gt_b( int rhs )         { typeError("attempt to compare string with number"); return false; }
 	public boolean gt_b( double rhs )      { typeError("attempt to compare string with number"); return false; }
-	public LuaValue gteq(LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)<=0? TRUE : FALSE) : super.gteq(rhs); }
+	public LuaValue gteq(LuaValue rhs )       { return rhs.isstring() ? (rhs.strcmp(this)<=0? LuaConstant.TRUE : LuaConstant.FALSE) : super.gteq(rhs); }
 	public boolean gteq_b( LuaValue rhs )     { return rhs.isstring() ? rhs.strcmp(this)<=0 : super.gteq_b(rhs); }
 	public boolean gteq_b( int rhs )       { typeError("attempt to compare string with number"); return false; }
 	public boolean gteq_b( double rhs )    { typeError("attempt to compare string with number"); return false; }
@@ -469,7 +470,7 @@ public class LuaString extends LuaValue {
 	}
 
 	// equality w/ metatable processing
-	public LuaValue eq(LuaValue val )    { return val.raweq(this)? TRUE: FALSE; }
+	public LuaValue eq(LuaValue val )    { return val.raweq(this)? LuaConstant.TRUE: LuaConstant.FALSE; }
 	public boolean eq_b( LuaValue val )   { return val.raweq(this); }
 	
 	// equality w/o metatable processing
@@ -736,7 +737,7 @@ public class LuaString extends LuaValue {
 	 */
 	public LuaValue tonumber() {
 		double d = scannumber();
-		return Double.isNaN(d)? NIL: valueOf(d);
+		return Double.isNaN(d)? LuaConstant.NIL: valueOf(d);
 	}
 	
 	/**
@@ -747,7 +748,7 @@ public class LuaString extends LuaValue {
 	 */
 	public LuaValue tonumber(int base ) {
 		double d = scannumber( base );
-		return Double.isNaN(d)? NIL: valueOf(d);
+		return Double.isNaN(d)? LuaConstant.NIL: valueOf(d);
 	}
 	
 	/**

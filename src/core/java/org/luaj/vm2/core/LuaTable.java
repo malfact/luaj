@@ -22,6 +22,7 @@
 package org.luaj.vm2.core;
 
 import org.luaj.vm2.*;
+import org.luaj.vm2.util.LuaConstant;
 
 import java.lang.ref.WeakReference;
 import java.util.Vector;
@@ -90,7 +91,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	
 	/** Construct empty table */
 	public LuaTable() {
-		array = NOVALS;
+		array = LuaConstant.NOVALS;
 		hash = NOBUCKETS;
 	}
 	
@@ -172,7 +173,7 @@ public class LuaTable extends LuaValue implements Metatable {
 		if ( nhash > 0 && nhash < MIN_HASH_CAPACITY )
 			nhash = MIN_HASH_CAPACITY;
 		// Size of both parts must be a power of two.
-		array = (narray>0? new LuaValue[1 << log2(narray)]: NOVALS);
+		array = (narray>0? new LuaValue[1 << log2(narray)]: LuaConstant.NOVALS);
 		hash = (nhash>0? new Slot[1 << log2(nhash)]: NOBUCKETS);
 		hashEntries = 0;
 	}
@@ -229,7 +230,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	public LuaValue rawget(int key ) {
 		if ( key>0 && key<=array.length ) {
 			LuaValue v = m_metatable == null ? array[key-1] : m_metatable.arrayget(array, key-1);
-			return v != null ? v : NIL;
+			return v != null ? v : LuaConstant.NIL;
 		}
 		return hashget( LuaInteger.valueOf(key) );
 	}
@@ -240,7 +241,7 @@ public class LuaTable extends LuaValue implements Metatable {
 			if ( ikey>0 && ikey<=array.length ) {
 				LuaValue v = m_metatable == null
 						? array[ikey-1] : m_metatable.arrayget(array, ikey-1);
-				return v != null ? v : NIL;
+				return v != null ? v : LuaConstant.NIL;
 			}
 		}
 		return hashget( key );
@@ -255,7 +256,7 @@ public class LuaTable extends LuaValue implements Metatable {
 				}
 			}
 		}
-		return NIL;
+		return LuaConstant.NIL;
 	}
 
 	public void set( int key, LuaValue value ) {
@@ -265,7 +266,7 @@ public class LuaTable extends LuaValue implements Metatable {
 
 	/** caller must ensure key is not nil */
 	public void set(LuaValue key, LuaValue value ) {
-		if (key == null || !key.isvalidkey() && !metatag(NEWINDEX).isfunction())
+		if (key == null || !key.isvalidkey() && !metatag(LuaConstant.MetaTag.NEWINDEX).isfunction())
 			throw new LuaError("value ('" + key + "') can not be used as a table index");
 		if ( m_metatable==null || ! rawget(key).isnil() ||  ! settable(this,key,value) )
 			rawset(key, value);
@@ -295,20 +296,20 @@ public class LuaTable extends LuaValue implements Metatable {
 	/** Remove the element at a position in a list-table
 	 * 
 	 * @param pos the position to remove
-	 * @return The removed item, or {@link #NONE} if not removed
+	 * @return The removed item, or {@link LuaConstant#NONE} if not removed
 	 */
 	public LuaValue remove(int pos) {
 		int n = length();
 		if ( pos == 0 )
 			pos = n;
 		else if (pos > n)
-			return NONE;
+			return LuaConstant.NONE;
 		LuaValue v = get(pos);
 		for (LuaValue r = v; !r.isnil(); ) {
 			r = get(pos+1);
 			set(pos++, r);
 		}
-		return v.isnil()? NONE: v;
+		return v.isnil()? LuaConstant.NONE: v;
 	}
 
 	/** Insert an element at a position in a list-table
@@ -355,7 +356,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	}
 	
 	public LuaValue len()  {
-		final LuaValue h = metatag(LEN);
+		final LuaValue h = metatag(LuaConstant.MetaTag.LEN);
 		if (h.toboolean())
 			return h.call(this);
 		return LuaInteger.valueOf(rawlen());
@@ -436,7 +437,7 @@ public class LuaTable extends LuaValue implements Metatable {
 		}
 		
 		// nothing found, push nil, return nil.
-		return NIL;
+		return LuaConstant.NIL;
 	}
 
 	/**
@@ -447,7 +448,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	public Varargs inext(LuaValue key) {
 		int k = key.checkint() + 1;
 		LuaValue v = rawget(k);
-		return v.isnil()? NONE: varargsOf(LuaInteger.valueOf(k),v);
+		return v.isnil()? LuaConstant.NONE: varargsOf(LuaInteger.valueOf(k),v);
 	}
 
 	/**
@@ -840,7 +841,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	 * @return count of keys in the table
 	 * */
 	public int keyCount() {
-		LuaValue k = NIL;
+		LuaValue k = LuaConstant.NIL;
 		for ( int i=0; true; i++ ) {
 			Varargs n = next(k);
 			if ( (k = n.arg1()).isnil() )
@@ -854,7 +855,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	 * */
 	public LuaValue[] keys() {
 		Vector l = new Vector();
-		LuaValue k = NIL;
+		LuaValue k = LuaConstant.NIL;
 		while ( true ) {
 			Varargs n = next(k);
 			if ( (k = n.arg1()).isnil() )
@@ -867,7 +868,7 @@ public class LuaTable extends LuaValue implements Metatable {
 	}
 	
 	// equality w/ metatable processing
-	public LuaValue eq(LuaValue val ) {  return eq_b(val)? TRUE: FALSE; }
+	public LuaValue eq(LuaValue val ) {  return eq_b(val)? LuaConstant.TRUE: LuaConstant.FALSE; }
 	public boolean eq_b( LuaValue val )  {
 		if ( this == val ) return true;
 		if ( m_metatable == null || !val.istable() ) return false;
@@ -887,19 +888,19 @@ public class LuaTable extends LuaValue implements Metatable {
 
 	/** Unpack the elements from i to j inclusive */
 	public Varargs unpack(int i, int j) {
-		if (j < i) return NONE;
+		if (j < i) return LuaConstant.NONE;
 		int count = j - i;
 		if (count < 0) throw new LuaError("too many results to unpack: greater " + Integer.MAX_VALUE); // integer overflow
 		int max = 0x00ffffff;
 		if (count >= max) throw new LuaError("too many results to unpack: " + count + " (max is " + max + ')');
 		int n = j + 1 - i;
 		switch (n) {
-		case 0: return NONE;
+		case 0: return LuaConstant.NONE;
 		case 1: return get(i);
 		case 2: return varargsOf(get(i), get(i+1));
 		default:
 			if (n < 0)
-				return NONE;
+				return LuaConstant.NONE;
 			try {
 				LuaValue[] v = new LuaValue[n];
 				while (--n >= 0)
@@ -1089,7 +1090,7 @@ public class LuaTable extends LuaValue implements Metatable {
 			case 1: return key();
 			case 2: return value();
 			}
-			return NIL;
+			return LuaConstant.NIL;
 		}
 
 		public int count() {
@@ -1112,7 +1113,7 @@ public class LuaTable extends LuaValue implements Metatable {
 			case 1: return this;
 			case 2: return value();
 			}
-			return NONE;
+			return LuaConstant.NONE;
 		}
 
 		public StrongSlot first() {
