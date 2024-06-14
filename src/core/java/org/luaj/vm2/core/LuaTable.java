@@ -119,7 +119,7 @@ public class LuaTable extends LuaValue implements Metatable {
 			rawset(i+1,unnamed[i]);
 		if ( lastarg != null )
 			for (int i = 1, n = lastarg.count(); i<=n; ++i )
-				rawset(nu+i,lastarg.arg(i));
+				rawset(nu+i,lastarg.get(i));
 		for ( int i=0; i<nn; i+=2 )
 			if (!named[i+1].isnil())
 				rawset(named[i], named[i+1]);
@@ -144,7 +144,7 @@ public class LuaTable extends LuaValue implements Metatable {
 		presize( n, 1 );
 		set(N, valueOf(n));
 		for ( int i=1; i<=n; i++ )
-			set(i, varargs.arg(i+nskip));
+			set(i, varargs.get(i+nskip));
 	}
 
 	@Override
@@ -844,7 +844,7 @@ public class LuaTable extends LuaValue implements Metatable {
 		LuaValue k = LuaConstant.NIL;
 		for ( int i=0; true; i++ ) {
 			Varargs n = next(k);
-			if ( (k = n.arg1()).isnil() )
+			if ( (k = n.get(1)).isnil() )
 				return i;
 		}
 	}
@@ -858,7 +858,7 @@ public class LuaTable extends LuaValue implements Metatable {
 		LuaValue k = LuaConstant.NIL;
 		while ( true ) {
 			Varargs n = next(k);
-			if ( (k = n.arg1()).isnil() )
+			if ( (k = n.get(1)).isnil() )
 				break;
 			l.addElement( k );
 		}
@@ -1085,10 +1085,11 @@ public class LuaTable extends LuaValue implements Metatable {
 			return 0;
 		}
 
-		public LuaValue arg(int i) {
+		@Override
+		public LuaValue get(int i) {
 			switch (i) {
-			case 1: return key();
-			case 2: return value();
+				case 1: return key();
+				case 2: return value();
 			}
 			return LuaConstant.NIL;
 		}
@@ -1102,10 +1103,6 @@ public class LuaTable extends LuaValue implements Metatable {
 		 */
 		public Varargs toVarargs() {
 			return varargsOf(key(), value());
-		}
-
-		public LuaValue arg1() {
-			return key();
 		}
 
 		public Varargs subargs(int start) {

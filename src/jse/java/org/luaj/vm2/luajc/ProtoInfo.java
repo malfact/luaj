@@ -6,7 +6,7 @@ import java.util.Hashtable;
 
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.core.LuaString;
-import org.luaj.vm2.Print;
+import org.luaj.vm2.util.Print;
 import org.luaj.vm2.Prototype;
 import org.luaj.vm2.Upvaldesc;
 

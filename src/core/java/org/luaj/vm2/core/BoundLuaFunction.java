@@ -1,5 +1,6 @@
 package org.luaj.vm2.core;
 
+import org.luaj.vm2.util.JavaFunction;
 import org.luaj.vm2.util.LuaConstant;
 
 public class BoundLuaFunction extends LuaFunction {
@@ -13,22 +14,22 @@ public class BoundLuaFunction extends LuaFunction {
 
     @Override
     public LuaValue call() {
-        return invoke(LuaConstant.NONE).arg(1);
+        return invoke(LuaConstant.NONE).get(1);
     }
 
     @Override
     public LuaValue call(LuaValue arg) {
-        return invoke(arg).arg(1);
+        return invoke(arg).get(1);
     }
 
     @Override
     public LuaValue call(LuaValue arg1, LuaValue arg2) {
-        return invoke(varargsOf(arg1,arg2)).arg(1);
+        return invoke(varargsOf(arg1,arg2)).get(1);
     }
 
     @Override
     public LuaValue call(LuaValue arg1, LuaValue arg2, LuaValue arg3) {
-        return invoke(varargsOf(arg1,arg2,arg3)).arg(1);
+        return invoke(varargsOf(arg1,arg2,arg3)).get(1);
     }
 
     public Varargs invoke(Varargs args) {

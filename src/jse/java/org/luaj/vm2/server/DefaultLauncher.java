@@ -76,7 +76,7 @@ public class DefaultLauncher implements Launcher {
 		final int n = results.count();
 		Object return_values[] = new Object[n];
 		for (int i = 0; i < n; ++i) {
-			LuaValue r = results.arg(i+1);
+			LuaValue r = results.get(i+1);
 			switch (r.getType()) {
 				case BOOLEAN:
 					return_values[i] = r.toboolean();

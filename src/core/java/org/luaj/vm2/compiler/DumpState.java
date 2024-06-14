@@ -35,7 +35,7 @@ import org.luaj.vm2.util.Globals;
 /** Class to dump a {@link Prototype} into an output stream, as part of compiling.
  * <p>
  * Generally, this class is not used directly, but rather indirectly via a command
- * line interface tool such as {@link luac}.
+ * line interface tool such as {@link }.
  * <p>
  * A lua binary file is created via {@link DumpState#dump}:
  * <pre> {@code

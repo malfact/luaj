@@ -262,11 +262,11 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 		final int n = v.count();
 		switch (n) {
 		case 0: return null;
-		case 1: return toJava(v.arg1());
+		case 1: return toJava(v.get(1));
 		default:
 			Object[] o = new Object[n];
 			for (int i=0; i<n; ++i)
-				o[i] = toJava(v.arg(i+1));
+				o[i] = toJava(v.get(i+1));
 			return o;
 		}
 	}

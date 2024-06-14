@@ -37,6 +37,7 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
 import org.luaj.vm2.util.Globals;
 import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.util.Print;
 
 
 /**
