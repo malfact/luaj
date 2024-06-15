@@ -33,7 +33,6 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
 import org.luaj.vm2.util.Globals;
 import org.luaj.vm2.util.LuaConstant;
-import org.luaj.vm2.util.Print;
 
 public class TestLuaJC {
 	// This file will be loaded using the finder as a resource, provided it is in the 
@@ -52,14 +51,14 @@ public class TestLuaJC {
 			globals = JsePlatform.standardGlobals();
 
 			// print the chunk as a closure, and pretty-print the closure.
-			LuaValue f = globals.loadfile(filename).get(1);
+			LuaValue f = globals.loadfile(filename).arg1();
 			Prototype p = f.checkclosure().p;
 			Print.print(p);
 
 			// load into a luajc java-bytecode based chunk by installing the LuaJC compiler first
 			if ( ! (args.length>0 && args[0].equals("nocompile")) ) {
 				LuaJC.install(globals);
-				f = globals.loadfile(filename).get(1);
+				f = globals.loadfile(filename).arg1();
 			}
 	
 			// call with arguments

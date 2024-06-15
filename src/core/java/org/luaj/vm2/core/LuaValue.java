@@ -1,12 +1,10 @@
-/*
- * LuaJ JSE 22 Update
+/* LuaJ JSE 22 Update
  * malfact @ June 2024
  */
 package org.luaj.vm2.core;
 
 import org.luaj.vm2.*;
 import org.luaj.vm2.util.Globals;
-import org.luaj.vm2.util.JavaFunction;
 import org.luaj.vm2.util.LuaConstant;
 
 /**
@@ -20,12 +18,9 @@ import org.luaj.vm2.util.LuaConstant;
  * {@link LuaValue#valueOf(int)} or {@link LuaValue#valueOf(String)} to allow
  * for instance pooling.
  * <p>
- * Constants are defined for the lua values {@code nil}, {@code true}, {@code false},
- * {@code 0}, {@code 1}, {@code -1}, {@code ""}, and {@code "_ENV"}.
- * <br>
- * A constant {@code none} is defined which is a {@link Varargs} list having no values.
- * <br>
- * See {@link LuaConstant}.
+ * Constants are defined for the lua values {@link LuaConstant#NIL}, {@link LuaConstant#TRUE}, and
+ * {@link LuaConstant#FALSE}. A constant {@link LuaConstant#NONE} is defined which is a
+ * {@link Varargs} list having no values.
  * <p>
  * Operations are performed on values directly via their Java methods. For
  * example, the following code divides two numbers:
@@ -102,9 +97,17 @@ import org.luaj.vm2.util.LuaConstant;
  * <li>{@link #tableOf(LuaValue[], LuaValue[], Varargs)} for mixtures</li>
  * </ul>
  * <p>
- * Predefined enums exist for the standard lua type constants: {@link LuaType}.
+ * Predefined enums exist for the standard lua type constants {@link LuaType#NIL},
+ * {@link LuaType#BOOLEAN}, {@link LuaType#LIGHT_USERDATA}, {@link LuaType#NUMBER},
+ * {@link LuaType#STRING}, {@link LuaType#TABLE}, {@link LuaType#FUNCTION}, {@link LuaType#USERDATA},
+ * {@link LuaType#THREAD}, and extended lua type constants {@link LuaType#INT},
+ * {@link LuaType#NONE}, {@link LuaType#VALUE}
  * <p>
- * Predefined constants exist for all strings used as metatags: {@link LuaConstant.MetaTag}.
+ * Predefined constants exist for all strings used as metatags: {@link LuaConstant.MetaTag#INDEX},
+ * {@link LuaConstant.MetaTag#NEWINDEX}, {@link LuaConstant.MetaTag#CALL}, {@link LuaConstant.MetaTag#MODE}, {@link LuaConstant.MetaTag#METATABLE},
+ * {@link LuaConstant.MetaTag#ADD}, {@link LuaConstant.MetaTag#SUB}, {@link LuaConstant.MetaTag#DIV}, {@link LuaConstant.MetaTag#MUL}, {@link LuaConstant.MetaTag#POW},
+ * {@link LuaConstant.MetaTag#MOD}, {@link LuaConstant.MetaTag#UNM}, {@link LuaConstant.MetaTag#LEN}, {@link LuaConstant.MetaTag#EQ}, {@link LuaConstant.MetaTag#LT},
+ * {@link LuaConstant.MetaTag#LE}, {@link LuaConstant.MetaTag#TOSTRING}, and {@link LuaConstant.MetaTag#CONCAT}.
  *
  * @see org.luaj.vm2.lib.jse.JsePlatform
  * @see LoadState
@@ -1177,9 +1180,7 @@ public abstract class LuaValue extends Varargs {
 	 * @see #get(String)
 	 * @see #rawget(LuaValue)
 	 */
-	public LuaValue get(LuaValue key) {
-		return gettable(this, key);
-	}
+	public LuaValue get(LuaValue key) { return gettable(this, key); }
 
 	/**
 	 * Get a value in a table including metatag processing using {@link LuaConstant.MetaTag#INDEX}.
@@ -1191,9 +1192,7 @@ public abstract class LuaValue extends Varargs {
 	 * @see #get(LuaValue)
 	 * @see #rawget(int)
 	 */
-	public LuaValue get(int key) {
-		return get(LuaInteger.valueOf(key));
-	}
+	public LuaValue get(int key) { return get(LuaInteger.valueOf(key)); }
 
 	/**
 	 * Get a value in a table including metatag processing using {@link LuaConstant.MetaTag#INDEX}.
@@ -1205,9 +1204,7 @@ public abstract class LuaValue extends Varargs {
 	 * @see #get(LuaValue)
 	 * @see #rawget(String)
 	 */
-	public LuaValue get(String key) {
-		return get(valueOf(key));
-	}
+	public LuaValue get(String key) { return get(valueOf(key)); }
 
 	/**
 	 * Set a value in a table without metatag processing using
@@ -1393,7 +1390,7 @@ public abstract class LuaValue extends Varargs {
 	 */
 	public void rawsetlist(int key0, Varargs values) {
 		for (int i = 0, n = values.count(); i < n; i++)
-			rawset(key0+i, values.get(i+1));
+			rawset(key0+i, values.arg(i+1));
 	}
 
 	/**
@@ -1434,7 +1431,8 @@ public abstract class LuaValue extends Varargs {
 	 * @see LuaTable
 	 * @see #inext(LuaValue)
 	 * @see #valueOf(int)
-	 * @see Varargs#get(int)
+	 * @see Varargs#arg1()
+	 * @see Varargs#arg(int)
 	 * @see #isnil()
 	 */
 	public Varargs next(LuaValue index) { return typeError("table"); }
@@ -1468,7 +1466,8 @@ public abstract class LuaValue extends Varargs {
 	 * @see LuaTable
 	 * @see #next(LuaValue)
 	 * @see #valueOf(int)
-	 * @see Varargs#get(int)
+	 * @see Varargs#arg1()
+	 * @see Varargs#arg(int)
 	 * @see #isnil()
 	 */
 	public Varargs inext(LuaValue index) { return typeError("table"); }
@@ -1484,10 +1483,15 @@ public abstract class LuaValue extends Varargs {
 	 */
 	public LuaValue load(LuaValue library) { return library.call(LuaConstant.EMPTY_STRING, this); }
 
+	// varargs references
 	@Override
-	public int count() {
-		return 1;
-	}
+	public LuaValue arg(int index) { return index == 1? this: LuaConstant.NIL; }
+
+	@Override
+	public int count() { return 1; }
+
+	@Override
+	public LuaValue arg1() { return this; }
 
 	/**
 	 * Get the metatable for this {@link LuaValue}
@@ -1653,7 +1657,7 @@ public abstract class LuaValue extends Varargs {
 	 * @see #invokemethod(LuaValue,Varargs)
 	 */
 	public LuaValue call(LuaValue arg1, LuaValue arg2, LuaValue arg3) {
-		return callmt().invoke(new LuaValue[] { this, arg1, arg2, arg3 }).get(1);
+		return callmt().invoke(new LuaValue[] { this, arg1, arg2, arg3 }).arg1();
 	}
 
 	/**
@@ -1843,7 +1847,7 @@ public abstract class LuaValue extends Varargs {
 	 * If {@code this} is a {@link LuaFunction}, call it, and return all values.
 	 * Otherwise, look for the {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a method call, use
 	 * {@link #invokemethod(LuaValue)} instead.
@@ -1866,7 +1870,7 @@ public abstract class LuaValue extends Varargs {
 	 * If {@code this} is a {@link LuaFunction}, call it, and return all values.
 	 * Otherwise, look for the {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a method call, use
 	 * {@link #invokemethod(LuaValue)} instead.
@@ -1893,7 +1897,7 @@ public abstract class LuaValue extends Varargs {
 	 * If {@code this} is a {@link LuaFunction}, call it, and return all values.
 	 * Otherwise, look for the {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a method call, use
 	 * {@link #invokemethod(LuaValue,Varargs)} instead.
@@ -1920,7 +1924,7 @@ public abstract class LuaValue extends Varargs {
 	 * If {@code this} is a {@link LuaFunction}, call it, and return all values.
 	 * Otherwise, look for the {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a method call, use
 	 * {@link #invokemethod(LuaValue,Varargs)} instead.
@@ -1950,7 +1954,7 @@ public abstract class LuaValue extends Varargs {
 	 * If {@code this} is a {@link LuaFunction}, call it, and return all values.
 	 * Otherwise, look for the {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a method call, use
 	 * {@link #invokemethod(LuaValue,Varargs)} instead.
@@ -1975,7 +1979,7 @@ public abstract class LuaValue extends Varargs {
 	 * If {@code this} is a {@link LuaFunction}, call it, and return all values.
 	 * Otherwise, look for the {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a method call, use
 	 * {@link #invokemethod(LuaValue,Varargs)} instead.
@@ -2006,7 +2010,7 @@ public abstract class LuaValue extends Varargs {
 	 * return values as a {@link Varargs} instance. Otherwise, look for the
 	 * {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a plain call, use {@link #invoke()} instead.
 	 *
@@ -2036,7 +2040,7 @@ public abstract class LuaValue extends Varargs {
 	 * return values as a {@link Varargs} instance. Otherwise, look for the
 	 * {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a plain call, use {@link #invoke()} instead.
 	 *
@@ -2066,7 +2070,7 @@ public abstract class LuaValue extends Varargs {
 	 * return values as a {@link Varargs} instance. Otherwise, look for the
 	 * {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a plain call, use {@link #invoke(Varargs)}
 	 * instead.
@@ -2099,7 +2103,7 @@ public abstract class LuaValue extends Varargs {
 	 * return values as a {@link Varargs} instance. Otherwise, look for the
 	 * {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a plain call, use {@link #invoke(Varargs)}
 	 * instead.
@@ -2132,7 +2136,7 @@ public abstract class LuaValue extends Varargs {
 	 * return values as a {@link Varargs} instance. Otherwise, look for the
 	 * {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a plain call, use {@link #invoke(Varargs)}
 	 * instead.
@@ -2168,7 +2172,7 @@ public abstract class LuaValue extends Varargs {
 	 * return values as a {@link Varargs} instance. Otherwise, look for the
 	 * {@link LuaConstant.MetaTag#CALL} metatag and call that.
 	 * <p>
-	 * To get a particular return value, us {@link Varargs#get(int)}
+	 * To get a particular return value, us {@link Varargs#arg(int)}
 	 * <p>
 	 * To call {@code this} as a plain call, use {@link #invoke(Varargs)}
 	 * instead.
@@ -3970,6 +3974,41 @@ public abstract class LuaValue extends Varargs {
 	 *            one.
 	 */
 	public void initupvalue1(LuaValue env) {}
+
+	/**
+	 * Varargs implemenation with no values.
+	 * <p>
+	 * This is an internal class not intended to be used directly. Instead use
+	 * the predefined constant {@link LuaConstant#NONE}
+	 *
+	 * @see LuaConstant#NONE
+	 */
+	public static final class None extends LuaNil {
+		public static final None NONE = new None();
+
+		private None() {}
+
+		@Override
+		public LuaValue arg(int i) { return LuaConstant.NIL; }
+
+		@Override
+		public int count() { return 0; }
+
+		@Override
+		public LuaValue arg1() { return LuaConstant.NIL; }
+
+		@Override
+		public String tojstring() { return "none"; }
+
+		@Override
+		public Varargs subargs(final int start) { return start > 0? this: argumentError(1, "start must be > 0"); }
+
+		@Override
+		void copyto(LuaValue[] dest, int offset, int length) {
+			for (; length > 0; length--)
+				dest[offset++] = LuaConstant.NIL;
+		}
+	}
 
 	/**
 	 * Create a {@code Varargs} instance containing arguments starting at index

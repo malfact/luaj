@@ -23,7 +23,7 @@ package org.luaj.luajc;
 
 import org.luaj.vm2.util.Globals;
 import org.luaj.vm2.core.LuaValue;
-import org.luaj.vm2.util.Print;
+import org.luaj.vm2.Print;
 import org.luaj.vm2.Prototype;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.util.LuaConstant;

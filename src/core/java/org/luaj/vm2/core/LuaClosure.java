@@ -26,7 +26,6 @@ import org.luaj.vm2.lib.DebugLib;
 import org.luaj.vm2.compiler.LuaC;
 import org.luaj.vm2.util.Globals;
 import org.luaj.vm2.util.LuaConstant;
-import org.luaj.vm2.util.Print;
 
 /**
  * Extension of {@link LuaFunction} which executes lua bytecode.
@@ -143,33 +142,33 @@ public class LuaClosure extends LuaFunction {
 	
 	public final LuaValue call() {
 		LuaValue[] stack = getNewStack();
-		return execute(stack, LuaConstant.NONE).get(1);
+		return execute(stack, LuaConstant.NONE).arg1();
 	}
 
 	public final LuaValue call(LuaValue arg) {
 		LuaValue[] stack = getNewStack();
 		switch ( p.numparams ) {
-		default: stack[0]=arg; return execute(stack, LuaConstant.NONE).get(1);
-		case 0: return execute(stack,arg).get(1);
+		default: stack[0]=arg; return execute(stack, LuaConstant.NONE).arg1();
+		case 0: return execute(stack,arg).arg1();
 		}
 	}
 	
 	public final LuaValue call(LuaValue arg1, LuaValue arg2) {
 		LuaValue[] stack = getNewStack();
 		switch ( p.numparams ) {
-		default: stack[0]=arg1; stack[1]=arg2; return execute(stack, LuaConstant.NONE).get(1);
-		case 1: stack[0]=arg1; return execute(stack,arg2).get(1);
-		case 0: return execute(stack,p.is_vararg!=0? varargsOf(arg1,arg2): LuaConstant.NONE).get(1);
+		default: stack[0]=arg1; stack[1]=arg2; return execute(stack, LuaConstant.NONE).arg1();
+		case 1: stack[0]=arg1; return execute(stack,arg2).arg1();
+		case 0: return execute(stack,p.is_vararg!=0? varargsOf(arg1,arg2): LuaConstant.NONE).arg1();
 		}
 	}
 
 	public final LuaValue call(LuaValue arg1, LuaValue arg2, LuaValue arg3) {
 		LuaValue[] stack = getNewStack();
 		switch ( p.numparams ) {
-		default: stack[0]=arg1; stack[1]=arg2; stack[2]=arg3; return execute(stack, LuaConstant.NONE).get(1);
-		case 2: stack[0]=arg1; stack[1]=arg2; return execute(stack,arg3).get(1);
-		case 1: stack[0]=arg1; return execute(stack,p.is_vararg!=0? varargsOf(arg2,arg3): LuaConstant.NONE).get(1);
-		case 0: return execute(stack,p.is_vararg!=0? varargsOf(arg1,arg2,arg3): LuaConstant.NONE).get(1);
+		default: stack[0]=arg1; stack[1]=arg2; stack[2]=arg3; return execute(stack, LuaConstant.NONE).arg1();
+		case 2: stack[0]=arg1; stack[1]=arg2; return execute(stack,arg3).arg1();
+		case 1: stack[0]=arg1; return execute(stack,p.is_vararg!=0? varargsOf(arg2,arg3): LuaConstant.NONE).arg1();
+		case 0: return execute(stack,p.is_vararg!=0? varargsOf(arg1,arg2,arg3): LuaConstant.NONE).arg1();
 		}
 	}
 
@@ -180,7 +179,7 @@ public class LuaClosure extends LuaFunction {
 	public final Varargs onInvoke(Varargs varargs) {
 		LuaValue[] stack = getNewStack();
 		for ( int i=0; i<p.numparams; i++ )
-			stack[i] = varargs.get(i+1);
+			stack[i] = varargs.arg(i+1);
 		return execute(stack,p.is_vararg!=0? varargs.subargs(p.numparams+1): LuaConstant.NONE);
 	}
 	
@@ -447,7 +446,7 @@ public class LuaClosure extends LuaFunction {
 					v = stack[a].invoke(varargsOf(stack[a+1],stack[a+2]));
 					c = (i>>14) & 0x1ff;
 					while (--c >= 0)
-						stack[a+3+c] = v.get(c+1);
+						stack[a+3+c] = v.arg(c+1);
 					v = LuaConstant.NONE;
 					continue;
 
@@ -471,7 +470,7 @@ public class LuaClosure extends LuaFunction {
 		                	for ( ;j<=m; j++ )
 		                    	o.set(offset+j, stack[a + j]);
 		                	for ( ;j<=b; j++ )
-		                    	o.set(offset+j, v.get(j-m));
+		                    	o.set(offset+j, v.arg(j-m));
 		                } else {
 		                    o.presize( offset + b );
 		                    for (int j=1; j<=b; j++)
@@ -502,7 +501,7 @@ public class LuaClosure extends LuaFunction {
 						v = varargs;
 					} else {
 						for ( int j=1; j<b; ++j )
-							stack[a+j-1] = varargs.get(j);
+							stack[a+j-1] = varargs.arg(j);
 					}
 					continue;
 

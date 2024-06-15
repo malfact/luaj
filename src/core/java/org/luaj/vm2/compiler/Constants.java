@@ -32,7 +32,6 @@ import org.luaj.vm2.core.LuaValue;
  * @see LuaC
  * @see FuncState
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class Constants extends Lua {
 	
 	/** Maximum stack size of a luaj vm interpreter instance. */
@@ -62,7 +61,7 @@ public class Constants extends Lua {
 			throw new LuaError("compiler assert failed");
 	}
 
-	static void SET_OPCODE(InstructionPtr i, int o) {
+	static void SET_OPCODE(InstructionPtr i,int o) {
 		i.set( ( i.get() & (MASK_NOT_OP)) | ((o << POS_OP) & MASK_OP) );
 	}
 	

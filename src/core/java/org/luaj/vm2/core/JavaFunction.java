@@ -1,6 +1,4 @@
-package org.luaj.vm2.util;
-
-import org.luaj.vm2.core.Varargs;
+package org.luaj.vm2.core;
 
 @FunctionalInterface
 public interface JavaFunction {

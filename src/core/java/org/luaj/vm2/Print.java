@@ -19,11 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-package org.luaj.vm2.util;
+package org.luaj.vm2;
 
-import org.luaj.vm2.Lua;
-import org.luaj.vm2.Prototype;
-import org.luaj.vm2.Upvaldesc;
 import org.luaj.vm2.core.*;
 
 import java.io.ByteArrayOutputStream;

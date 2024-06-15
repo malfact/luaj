@@ -1,6 +1,6 @@
 package org.luaj;
 
-import org.luaj.vm2.util.Print;
+import org.luaj.vm2.Print;
 import org.luaj.vm2.Prototype;
 import org.luaj.vm2.compiler.DumpState;
 

@@ -26,7 +26,6 @@ import org.luaj.vm2.core.LuaClosure;
 import org.luaj.vm2.core.LuaString;
 import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.util.Globals;
-import org.luaj.vm2.util.Print;
 
 /**
  * Prototype representing compiled lua code. 

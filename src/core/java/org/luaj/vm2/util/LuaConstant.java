@@ -8,7 +8,7 @@ import org.luaj.vm2.core.*;
 
 import java.util.Arrays;
 
-public final class LuaConstant {
+public class LuaConstant {
 
     /** LuaValue constant corresponding to lua {@code #NIL} */
     public static final LuaValue NIL = LuaNil.NIL;
@@ -20,7 +20,7 @@ public final class LuaConstant {
     public static final LuaBoolean FALSE = LuaBoolean.FALSE;
 
     /** LuaValue constant corresponding to a {@link Varargs} list of no values*/
-    public static final LuaValue NONE = LuaNil.None.NONE;
+    public static final LuaValue NONE = LuaValue.None.NONE;
 
     /** LuaValue number constant equal to 0 */
     public static final LuaNumber ZERO = LuaInteger.valueOf(0);
@@ -52,10 +52,7 @@ public final class LuaConstant {
     /** The variable name of the environment. */
     public static LuaString ENV = LuaValue.valueOf("_ENV");
 
-    /**
-     * Lua constants for use as a metatag in a metatable.
-     */
-    public static final class MetaTag {
+    public static class MetaTag {
 
         /** LuaString constant with value "__index" for use as metatag */
         public static final LuaString INDEX = LuaValue.valueOf("__index");

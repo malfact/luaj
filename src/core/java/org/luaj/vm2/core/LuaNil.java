@@ -105,35 +105,4 @@ public class LuaNil extends LuaValue {
 	public Object      optuserdata(Object defval)          { return defval; }
 	public Object      optuserdata(Class c, Object defval) { return defval; }
 	public LuaValue optvalue(LuaValue defval)           { return defval; }
-
-	/**
-	 * Varargs implemenation with no values.
-	 * <p>
-	 * This is an internal class not intended to be used directly. Instead use
-	 * the predefined constant {@link LuaConstant#NONE}
-	 *
-	 * @see LuaConstant#NONE
-	 */
-	public static final class None extends LuaNil {
-		public static final None NONE = new None();
-
-		private None() {}
-
-		@Override
-		public int count() { return 0; }
-
-		@Override
-		public String tojstring() { return "none"; }
-
-		@Override
-		public Varargs subargs(final int start) {
-			return start > 0? this: argumentError(1, "start must be > 0");
-		}
-
-		@Override
-		void copyto(LuaValue[] dest, int offset, int length) {
-			for (; length > 0; length--)
-				dest[offset++] = LuaConstant.NIL;
-		}
-	}
 }
