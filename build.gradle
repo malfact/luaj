@@ -24,8 +24,6 @@ repositories {
 dependencies {
     // Apache Commons Bytecode Engineering Library
     implementation 'org.apache.bcel:bcel:6.6.0'
-    // MicroEmu is a pure Java implementation of Java ME
-    implementation 'org.microemu:microemulator:2.0.4'
 
     testImplementation(platform('org.junit:junit-bom:5.10.2'))
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
