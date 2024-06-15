@@ -21,11 +21,7 @@
 ******************************************************************************/
 package org.luaj.vm2;
 
-import org.luaj.vm2.core.LuaNumber;
-import org.luaj.vm2.core.LuaString;
-import org.luaj.vm2.core.LuaValue;
 import org.luaj.vm2.lib.MathLib;
-import org.luaj.vm2.util.LuaConstant;
 
 /**
  * Extension of {@link LuaNumber} which can hold a Java int as its value.

@@ -21,8 +21,6 @@
 ******************************************************************************/
 package org.luaj.vm2;
 
-import org.luaj.vm2.core.LuaString;
-
 public class Upvaldesc {
 
 	/* upvalue name (for debug information) */

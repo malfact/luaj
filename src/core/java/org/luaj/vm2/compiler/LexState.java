@@ -22,16 +22,16 @@
 package org.luaj.vm2.compiler;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.LuaError;
-import org.luaj.vm2.core.LuaString;
+import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaString;
 import org.luaj.vm2.lib.MathLib;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
 
-import org.luaj.vm2.core.LuaValue;
-import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.LuaConstant;
 
 
 public class LexState extends Constants {

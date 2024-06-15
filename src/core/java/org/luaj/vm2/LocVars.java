@@ -21,8 +21,6 @@
 ******************************************************************************/
 package org.luaj.vm2;
 
-import org.luaj.vm2.core.LuaString;
-
 /**
  * Data class to hold debug information relating to local variables for a {@link Prototype}
  */

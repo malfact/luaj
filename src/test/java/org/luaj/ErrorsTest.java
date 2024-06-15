@@ -21,7 +21,7 @@ public class ErrorsTest extends PlatformTestCase {
     void testBaseLibArgs() {
         globals.STDIN = new InputStream() {
             @Override
-            public int read() throws IOException {
+            public int read() {
                 return -1;
             }
         };

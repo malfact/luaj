@@ -26,10 +26,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.LuaString;
-import org.luaj.vm2.core.LuaType;
-import org.luaj.vm2.core.LuaValue;
-import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.LuaString;
+import org.luaj.vm2.LuaType;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Globals;
 
 
 /** Class to dump a {@link Prototype} into an output stream, as part of compiling.

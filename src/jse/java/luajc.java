@@ -30,7 +30,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.Globals;
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;

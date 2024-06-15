@@ -30,13 +30,13 @@ import java.io.InputStreamReader;
 import java.util.Vector;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.LuaTable;
-import org.luaj.vm2.core.LuaValue;
-import org.luaj.vm2.core.Varargs;
+import org.luaj.vm2.LuaTable;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
-import org.luaj.vm2.util.Globals;
-import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaConstant;
 
 
 /**

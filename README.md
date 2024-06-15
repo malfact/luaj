@@ -641,7 +641,7 @@ All lua value manipulation is now organized around
 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaValue.html">LuaValue</a>
 which exposes the majority of interfaces used for lua computation.  
 <pre>
-	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaValue.html">org.luaj.vm2.core.LuaValue</a>
+	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaValue.html">org.luaj.vm2.LuaValue</a>
 </pre>
 
 <h3>Common Functions</h3>
@@ -669,7 +669,7 @@ both a variable argument list and multiple return values.
 For convenience, <em>LuaValue</em> implements <em>Varargs</em> so a single value can be supplied anywhere 
 variable arguments are expected.      
 <pre>
-	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/Varargs.html">org.luaj.vm2.core.Varargs</a>
+	 <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/Varargs.html">org.luaj.vm2.Varargs</a>
 </pre>
 
 <h3>Common Functions</h3>
@@ -747,7 +747,7 @@ in the environment that can be called from lua.
 <p>
 A complete example of Java code for a simple toy library is in <a href="examples/jse/hyperbolic.java">examples/jse/hyperbolic.java</a> 
 <pre>
-import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.*;
 
 public class hyperbolic extends TwoArgFunction {
@@ -798,7 +798,7 @@ For this example to work the code in <em>hyperbolic.java</em> must be compiled a
 Closures still exist in this framework, but are optional, and are only used to implement lua bytecode execution, 
 and is generally not directly manipulated by the user of luaj.
 <p>
-See the <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaClosure.html">org.luaj.vm2.core.LuaClosure</a> 
+See the <a href="http://luaj.org/luaj/3.0/api/org/luaj/vm2/LuaClosure.html">org.luaj.vm2.LuaClosure</a> 
 javadoc for details on using that class directly. 
 
 <h1>6 - <a name="6">Parser</a></h1>

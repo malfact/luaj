@@ -3,8 +3,8 @@ package org.luaj.vm2.luajc;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.luaj.vm2.core.LuaFunction;
-import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.LuaFunction;
+import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Prototype;
 
 /*******************************************************************************

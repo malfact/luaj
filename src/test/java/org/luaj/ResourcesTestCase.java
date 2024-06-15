@@ -1,7 +1,7 @@
 package org.luaj;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.Globals;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 import java.io.InputStream;

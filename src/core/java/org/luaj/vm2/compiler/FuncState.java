@@ -24,11 +24,11 @@ package org.luaj.vm2.compiler;
 import java.util.Hashtable;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.LuaString;
-import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.LuaString;
+import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.compiler.LexState.ConsControl;
 import org.luaj.vm2.compiler.LexState.expdesc;
-import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.LuaConstant;
 
 
 public class FuncState extends Constants {

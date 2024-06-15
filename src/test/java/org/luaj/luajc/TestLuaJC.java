@@ -27,12 +27,12 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.LuaValue;
-import org.luaj.vm2.core.Varargs;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
-import org.luaj.vm2.util.Globals;
-import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaConstant;
 
 public class TestLuaJC {
 	// This file will be loaded using the finder as a resource, provided it is in the 

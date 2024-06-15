@@ -24,7 +24,7 @@ package org.luaj.vm2.ast;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.luaj.vm2.core.LuaString;
+import org.luaj.vm2.LuaString;
 
 public class Str {
 	

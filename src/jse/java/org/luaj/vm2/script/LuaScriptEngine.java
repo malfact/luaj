@@ -26,12 +26,11 @@ import java.io.*;
 import javax.script.*;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.*;
 import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.util.Globals;
-import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaConstant;
 
 /**
  * Implementation of the ScriptEngine interface which can compile and execute
@@ -259,7 +258,7 @@ public class LuaScriptEngine extends AbstractScriptEngine implements ScriptEngin
 	}
 
 	static private Object toJava(Varargs v) {
-		final int n = v.count();
+		final int n = v.narg();
 		switch (n) {
 		case 0: return null;
 		case 1: return toJava(v.arg1());

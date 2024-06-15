@@ -22,7 +22,7 @@
 package org.luaj.vm2.ast;
 
 import org.luaj.vm2.Lua;
-import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.LuaValue;
 
 abstract
 public class Exp extends SyntaxElement {

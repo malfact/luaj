@@ -11,7 +11,7 @@ import org.luaj.vm2.ast.Stat.GenericFor;
 import org.luaj.vm2.ast.Stat.LocalAssign;
 import org.luaj.vm2.ast.Stat.LocalFuncDef;
 import org.luaj.vm2.ast.Stat.NumericFor;
-import org.luaj.vm2.util.LuaConstant;
+import org.luaj.vm2.LuaConstant;
 
 /** 
  * Visitor that resolves names to scopes.

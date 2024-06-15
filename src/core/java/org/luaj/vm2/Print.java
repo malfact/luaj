@@ -21,8 +21,6 @@
  ******************************************************************************/
 package org.luaj.vm2;
 
-import org.luaj.vm2.core.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 

@@ -31,7 +31,7 @@ import java.io.Writer;
 import javax.script.ScriptContext;
 import javax.script.SimpleScriptContext;
 
-import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.Globals;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.luaj.vm2.luajc.LuaJC;
 

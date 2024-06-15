@@ -21,10 +21,6 @@
  ******************************************************************************/
 package org.luaj.vm2;
 
-import org.luaj.vm2.core.LuaNumber;
-import org.luaj.vm2.core.LuaString;
-import org.luaj.vm2.core.LuaValue;
-
 /**
  * String buffer for use in string library methods, optimized for production of
  * StrValue instances.

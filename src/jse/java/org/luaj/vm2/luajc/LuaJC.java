@@ -27,11 +27,11 @@ import java.io.Reader;
 import java.util.Hashtable;
 
 import org.luaj.vm2.*;
-import org.luaj.vm2.core.LuaClosure;
-import org.luaj.vm2.core.LuaFunction;
-import org.luaj.vm2.core.LuaValue;
+import org.luaj.vm2.LuaClosure;
+import org.luaj.vm2.LuaFunction;
+import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.compiler.LuaC;
-import org.luaj.vm2.util.Globals;
+import org.luaj.vm2.Globals;
 
 /**
  * Implementation of {@link Globals.Compiler} which does direct

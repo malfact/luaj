@@ -24,9 +24,9 @@ package org.luaj.vm2.server;
 import java.io.InputStream;
 import java.io.Reader;
 
-import org.luaj.vm2.util.Globals;
-import org.luaj.vm2.core.LuaValue;
-import org.luaj.vm2.core.Varargs;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
@@ -73,7 +73,7 @@ public class DefaultLauncher implements Launcher {
 			args[i] = CoerceJavaToLua.coerce(arg[i]);
 		Varargs results = chunk.invoke(LuaValue.varargsOf(args));
 
-		final int n = results.count();
+		final int n = results.narg();
 		Object return_values[] = new Object[n];
 		for (int i = 0; i < n; ++i) {
 			LuaValue r = results.arg(i+1);
