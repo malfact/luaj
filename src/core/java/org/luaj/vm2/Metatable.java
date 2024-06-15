@@ -24,7 +24,7 @@ package org.luaj.vm2;
 /**
  * Provides operations that depend on the __mode key of the metatable.
  */
-interface Metatable {
+public interface Metatable {
 
 	/** Return whether or not this table's keys are weak. */
 	boolean useWeakKeys();
