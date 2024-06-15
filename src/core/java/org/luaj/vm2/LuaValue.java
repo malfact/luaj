@@ -109,6 +109,7 @@ package org.luaj.vm2;
  * @see LoadState
  * @see Varargs
  */
+@SuppressWarnings({"unused", "UnusedReturnValue", "BooleanMethodIsAlwaysInverted", "SameParameterValue"})
 public abstract class LuaValue extends Varargs {
 
     /**
@@ -339,7 +340,7 @@ public abstract class LuaValue extends Varargs {
      * @see #optuserdata(Class, Object)
      * @see LuaType#USERDATA
      */
-    public boolean isuserdata(Class c) {
+    public boolean isuserdata(Class<?> c) {
         return false;
     }
 
@@ -514,7 +515,7 @@ public abstract class LuaValue extends Varargs {
      * @see #isuserdata(Class)
      * @see LuaType#USERDATA
      */
-    public Object touserdata(Class c) {
+    public <T> T touserdata(Class<T> c) {
         return null;
     }
 
@@ -851,7 +852,7 @@ public abstract class LuaValue extends Varargs {
      * @see #optuserdata(Object)
      * @see LuaType#USERDATA
      */
-    public Object optuserdata(Class c, Object defval) {
+    public <T> T optuserdata(Class<T> c, T defval) {
         argumentError(c.getName());
         return null;
     }
@@ -1164,7 +1165,7 @@ public abstract class LuaValue extends Varargs {
      * @see #checkuserdata()
      * @see LuaType#USERDATA
      */
-    public Object checkuserdata(Class c) {
+    public <T> T checkuserdata(Class<T> c) {
         argumentError("userdata");
         return null;
     }
@@ -2674,9 +2675,9 @@ public abstract class LuaValue extends Varargs {
      * @see #raweq(LuaValue)
      * @see LuaConstant.MetaTag#EQ
      */
-    public static final boolean eqmtcall(LuaValue lhs, LuaValue lhsmt, LuaValue rhs, LuaValue rhsmt) {
+    public static boolean eqmtcall(LuaValue lhs, LuaValue lhsmt, LuaValue rhs, LuaValue rhsmt) {
         LuaValue h = lhsmt.rawget(LuaConstant.MetaTag.EQ);
-        return h.isnil() || h != rhsmt.rawget(LuaConstant.MetaTag.EQ) ? false : h.call(lhs, rhs).toboolean();
+        return !h.isnil() && h == rhsmt.rawget(LuaConstant.MetaTag.EQ) && h.call(lhs, rhs).toboolean();
     }
 
     /**
@@ -4108,9 +4109,6 @@ public abstract class LuaValue extends Varargs {
      *         {@link LuaConstant#NIL}
      * @throws LuaError if there is a loop in metatag processing
      */
-    /**
-     * get value from metatable operations, or NIL if not defined by metatables
-     */
     protected static LuaValue gettable(LuaValue t, LuaValue key) {
         LuaValue tm;
         int loop = 0;
@@ -4233,16 +4231,12 @@ public abstract class LuaValue extends Varargs {
      * @see LuaValue#varargsOf(LuaValue[], int, int)
      */
     public static Varargs varargsOf(final LuaValue[] v) {
-        switch (v.length) {
-            case 0:
-                return LuaConstant.NONE;
-            case 1:
-                return v[0];
-            case 2:
-                return new Varargs.PairVarargs(v[0], v[1]);
-            default:
-                return new Varargs.ArrayVarargs(v, LuaConstant.NONE);
-        }
+        return switch (v.length) {
+            case 0 -> LuaConstant.NONE;
+            case 1 -> v[0];
+            case 2 -> new PairVarargs(v[0], v[1]);
+            default -> new ArrayVarargs(v, LuaConstant.NONE);
+        };
     }
 
     /**
@@ -4255,17 +4249,13 @@ public abstract class LuaValue extends Varargs {
      * @see LuaValue#varargsOf(LuaValue[], int, int, Varargs)
      */
     public static Varargs varargsOf(final LuaValue[] v, Varargs r) {
-        switch (v.length) {
-            case 0:
-                return r;
-            case 1:
-                return r.narg() > 0 ? (Varargs) new Varargs.PairVarargs(v[0], r) : (Varargs) v[0];
-            case 2:
-                return r.narg() > 0 ? (Varargs) new Varargs.ArrayVarargs(v, r)
-                    : (Varargs) new Varargs.PairVarargs(v[0], v[1]);
-            default:
-                return new Varargs.ArrayVarargs(v, r);
-        }
+        return switch (v.length) {
+            case 0 -> r;
+            case 1 -> r.narg() > 0 ? new PairVarargs(v[0], r) : v[0];
+            case 2 -> r.narg() > 0 ? new ArrayVarargs(v, r)
+                : new PairVarargs(v[0], v[1]);
+            default -> new ArrayVarargs(v, r);
+        };
     }
 
     /**
@@ -4279,16 +4269,12 @@ public abstract class LuaValue extends Varargs {
      * @see LuaValue#varargsOf(LuaValue[], int, int, Varargs)
      */
     public static Varargs varargsOf(final LuaValue[] v, final int offset, final int length) {
-        switch (length) {
-            case 0:
-                return LuaConstant.NONE;
-            case 1:
-                return v[offset];
-            case 2:
-                return new Varargs.PairVarargs(v[offset + 0], v[offset + 1]);
-            default:
-                return new Varargs.ArrayPartVarargs(v, offset, length, LuaConstant.NONE);
-        }
+        return switch (length) {
+            case 0 -> LuaConstant.NONE;
+            case 1 -> v[offset];
+            case 2 -> new PairVarargs(v[offset], v[offset + 1]);
+            default -> new ArrayPartVarargs(v, offset, length, LuaConstant.NONE);
+        };
     }
 
     /**
@@ -4306,17 +4292,13 @@ public abstract class LuaValue extends Varargs {
      * @see LuaValue#varargsOf(LuaValue[], int, int)
      */
     public static Varargs varargsOf(final LuaValue[] v, final int offset, final int length, Varargs more) {
-        switch (length) {
-            case 0:
-                return more;
-            case 1:
-                return more.narg() > 0 ? (Varargs) new Varargs.PairVarargs(v[offset], more) : (Varargs) v[offset];
-            case 2:
-                return more.narg() > 0 ? (Varargs) new Varargs.ArrayPartVarargs(v, offset, length, more)
-                    : (Varargs) new Varargs.PairVarargs(v[offset], v[offset + 1]);
-            default:
-                return new Varargs.ArrayPartVarargs(v, offset, length, more);
-        }
+        return switch (length) {
+            case 0 -> more;
+            case 1 -> more.narg() > 0 ? new PairVarargs(v[offset], more) : v[offset];
+            case 2 -> more.narg() > 0 ? new ArrayPartVarargs(v, offset, length, more)
+                : new PairVarargs(v[offset], v[offset + 1]);
+            default -> new ArrayPartVarargs(v, offset, length, more);
+        };
     }
 
     /**
@@ -4331,12 +4313,10 @@ public abstract class LuaValue extends Varargs {
      * @return {@link Varargs} wrapping the supplied values.
      */
     public static Varargs varargsOf(LuaValue v, Varargs r) {
-        switch (r.narg()) {
-            case 0:
-                return v;
-            default:
-                return new Varargs.PairVarargs(v, r);
-        }
+        if (r.narg() == 0)
+            return v;
+
+        return new PairVarargs(v, r);
     }
 
     /**
@@ -4352,12 +4332,10 @@ public abstract class LuaValue extends Varargs {
      * @return {@link Varargs} wrapping the supplied values.
      */
     public static Varargs varargsOf(LuaValue v1, LuaValue v2, Varargs v3) {
-        switch (v3.narg()) {
-            case 0:
-                return new Varargs.PairVarargs(v1, v2);
-            default:
-                return new Varargs.ArrayPartVarargs(new LuaValue[]{v1, v2}, 0, 2, v3);
+        if (v3.narg() == 0) {
+            return new PairVarargs(v1, v2);
         }
+        return new ArrayPartVarargs(new LuaValue[]{v1, v2}, 0, 2, v3);
     }
 
     /**
