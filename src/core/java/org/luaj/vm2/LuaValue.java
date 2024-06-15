@@ -1459,10 +1459,6 @@ public abstract class LuaValue extends Varargs {
         set(valueOf(key), valueOf(value));
     }
 
-    public void set(String key, JavaFunction javaFunction) {
-        set(key, new BoundLuaFunction(key, javaFunction));
-    }
-
     /**
      * Get a value in a table without metatag processing.
      *
