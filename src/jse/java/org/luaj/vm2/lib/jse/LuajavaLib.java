@@ -37,6 +37,9 @@ import org.luaj.vm2.lib.LibFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaConstant;
+import org.luaj.vm2.lib.jse.coercion.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.coercion.CoerceLuaToJava;
+import org.luaj.vm2.lib.jse.coercion.JavaClass;
 
 /**
  * Subclass of {@link LibFunction} which implements the features of the luajava package.

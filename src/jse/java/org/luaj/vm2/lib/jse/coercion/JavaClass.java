@@ -19,7 +19,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2.lib.jse;
+package org.luaj.vm2.lib.jse.coercion;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

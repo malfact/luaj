@@ -27,7 +27,7 @@ import java.io.Reader;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.coercion.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 /**

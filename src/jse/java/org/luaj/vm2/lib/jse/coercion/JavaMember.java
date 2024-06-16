@@ -19,11 +19,11 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 ******************************************************************************/
-package org.luaj.vm2.lib.jse;
+package org.luaj.vm2.lib.jse.coercion;
 
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
-import org.luaj.vm2.lib.jse.CoerceLuaToJava.Coercion;
+import org.luaj.vm2.lib.jse.coercion.CoerceLuaToJava.Coercion;
 
 /**
  * Java method or constructor.

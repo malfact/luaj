@@ -28,7 +28,7 @@ import javax.script.*;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.coercion.CoerceJavaToLua;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaConstant;
 
