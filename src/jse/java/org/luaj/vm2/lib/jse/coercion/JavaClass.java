@@ -101,8 +101,7 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
 
             // --- Constructors ---
             for (Constructor<?> constructor : ((Class<?>) m_instance).getConstructors())
-                if (Modifier.isPublic(constructor.getModifiers()))
-                    constructorList.add(JavaConstructor.forConstructor(constructor));
+                constructorList.add(JavaConstructor.forConstructor(constructor));
 
             switch (constructorList.size()) {
                 case 0:
