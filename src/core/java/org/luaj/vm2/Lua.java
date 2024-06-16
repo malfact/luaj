@@ -30,7 +30,7 @@ package org.luaj.vm2;
  */
 public class Lua {
 	/** version is supplied by ant build task */
-	public static final String _VERSION = "Luaj 0.0";
+	public static final String _VERSION = "Luaj2 1.0";
 	
 	/** use return values from previous op */
 	public static final int LUA_MULTRET = -1;
