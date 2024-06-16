@@ -21,10 +21,7 @@
  ******************************************************************************/
 package org.luaj.vm2.lib.jse.coercion;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,6 +60,10 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
         return j;
     }
 
+    private static boolean isJavaOnly(AnnotatedElement element) {
+        return element.getAnnotation(JavaOnly.class) != null;
+    }
+
     private JavaClass(Class<?> c) {
         super(c);
         this.jclass = this;
@@ -77,7 +78,18 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
             Map<LuaValue, Field> m = new HashMap<>();
             Field[] f = ((Class<?>) m_instance).getFields();
             for (Field field : f) {
-                m.put(LuaValue.valueOf(field.getName()), field);
+                if (isJavaOnly(field))
+                    continue;
+
+                LuaField luaField = field.getAnnotation(LuaField.class);
+                String name;
+
+                if (luaField == null || luaField.value().isEmpty())
+                    name = field.getName();
+                else
+                    name = luaField.value();
+
+                m.put(LuaValue.valueOf(name), field);
             }
             this.fields = m;
         }
@@ -90,7 +102,17 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
             // --- Methods ---
             Map<String, List<JavaMethod>> namedlists = new HashMap<>();
             for (Method method : ((Class<?>) m_instance).getMethods()) {
-                String name = method.getName();
+                if (isJavaOnly(method))
+                    continue;
+
+                LuaMethod luaMethod = method.getAnnotation(LuaMethod.class);
+                String name;
+
+                if (luaMethod == null || luaMethod.value().isEmpty())
+                    name = method.getName();
+                else
+                    name = luaMethod.value();
+
                 List<JavaMethod> list = namedlists.computeIfAbsent(name, k -> new ArrayList<>());
                 list.add(JavaMethod.forMethod(method));
             }
@@ -100,8 +122,12 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
             List<JavaConstructor> constructorList = new ArrayList<>();
 
             // --- Constructors ---
-            for (Constructor<?> constructor : ((Class<?>) m_instance).getConstructors())
+            for (Constructor<?> constructor : ((Class<?>) m_instance).getConstructors()) {
+                if (isJavaOnly(constructor))
+                    continue;
+
                 constructorList.add(JavaConstructor.forConstructor(constructor));
+            }
 
             switch (constructorList.size()) {
                 case 0:
@@ -133,6 +159,9 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
         if (innerclasses == null) {
             Map<LuaValue, Class<?>> innerClasses = new HashMap<>();
             for (Class<?> clazz : ((Class<?>) m_instance).getClasses()) {
+                if (isJavaOnly(clazz))
+                    continue;
+
                 String name = clazz.getName();
                 String stub = name.substring(Math.max(name.lastIndexOf('$'), name.lastIndexOf('.')) + 1);
                 innerClasses.put(LuaValue.valueOf(stub), clazz);
