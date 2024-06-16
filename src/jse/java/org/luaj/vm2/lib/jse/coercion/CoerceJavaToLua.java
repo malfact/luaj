@@ -24,6 +24,7 @@ package org.luaj.vm2.lib.jse.coercion;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.luaj.vm2.*;
 import org.luaj.vm2.LuaString;
@@ -63,39 +64,63 @@ import org.luaj.vm2.LuaConstant;
  * @see CoerceJavaToLua#coerce(Object)
  * @see org.luaj.vm2.lib.jse.LuajavaLib
  */
-public class CoerceJavaToLua {
+public final class CoerceJavaToLua {
+
+    /**
+     * Coerse a Java object to a corresponding lua value.
+     * <p>
+     * Integral types {@code boolean}, {@code byte},  {@code char}, and {@code int}
+     * will become {@link LuaInteger};
+     * {@code long}, {@code float}, and {@code double} will become {@link LuaDouble};
+     * {@code String} and {@code byte[]} will become {@link LuaString};
+     * types inheriting from {@link LuaValue} will be returned without coercion;
+     * other types will become {@link LuaUserdata}.
+     *
+     * @param o Java object needing conversion
+     * @return {@link LuaValue} corresponding to the supplied Java value.
+     * @see LuaValue
+     * @see LuaInteger
+     * @see LuaDouble
+     * @see LuaString
+     * @see LuaUserdata
+     */
+    public static LuaValue coerce(Object o) {
+        if (o == null)
+            return LuaConstant.NIL;
+        Class<?> clazz = o.getClass();
+        Coercion c = COERCIONS.computeIfAbsent(clazz, k ->
+            clazz.isArray() ? arrayCoercion
+                : o instanceof LuaValue ? luaCoercion
+                : instanceCoercion
+        );
+        return c.coerce(o);
+    }
 
     interface Coercion {
         LuaValue coerce(Object javaValue);
     }
 
-    ;
-
     private static final class BoolCoercion implements Coercion {
         public LuaValue coerce(Object javaValue) {
-            Boolean b = (Boolean) javaValue;
-            return b.booleanValue() ? LuaConstant.TRUE : LuaConstant.FALSE;
+            return ((boolean) javaValue) ? LuaConstant.TRUE : LuaConstant.FALSE;
         }
     }
 
     private static final class IntCoercion implements Coercion {
         public LuaValue coerce(Object javaValue) {
-            Number n = (Number) javaValue;
-            return LuaInteger.valueOf(n.intValue());
+            return LuaInteger.valueOf((int) javaValue);
         }
     }
 
     private static final class CharCoercion implements Coercion {
         public LuaValue coerce(Object javaValue) {
-            Character c = (Character) javaValue;
-            return LuaInteger.valueOf(c.charValue());
+            return LuaInteger.valueOf((char) javaValue);
         }
     }
 
     private static final class DoubleCoercion implements Coercion {
         public LuaValue coerce(Object javaValue) {
-            Number n = (Number) javaValue;
-            return LuaDouble.valueOf(n.doubleValue());
+            return LuaDouble.valueOf((double) javaValue);
         }
     }
 
@@ -113,7 +138,7 @@ public class CoerceJavaToLua {
 
     private static final class ClassCoercion implements Coercion {
         public LuaValue coerce(Object javaValue) {
-            return JavaClass.forClass((Class) javaValue);
+            return JavaClass.forClass((Class<?>) javaValue);
         }
     }
 
@@ -137,8 +162,9 @@ public class CoerceJavaToLua {
     }
 
 
-    static final Map COERCIONS = Collections.synchronizedMap(new HashMap());
+    static final Map<Class<?>,Coercion> COERCIONS = Collections.synchronizedMap(new HashMap<>());
 
+    // ToDo: Replace with lambdas?
     static {
         Coercion boolCoercion = new BoolCoercion();
         Coercion intCoercion = new IntCoercion();
@@ -160,41 +186,11 @@ public class CoerceJavaToLua {
         COERCIONS.put(Class.class, classCoercion);
     }
 
-    /**
-     * Coerse a Java object to a corresponding lua value.
-     * <p>
-     * Integral types {@code boolean}, {@code byte},  {@code char}, and {@code int}
-     * will become {@link LuaInteger};
-     * {@code long}, {@code float}, and {@code double} will become {@link LuaDouble};
-     * {@code String} and {@code byte[]} will become {@link LuaString};
-     * types inheriting from {@link LuaValue} will be returned without coercion;
-     * other types will become {@link LuaUserdata}.
-     *
-     * @param o Java object needing conversion
-     * @return {@link LuaValue} corresponding to the supplied Java value.
-     * @see LuaValue
-     * @see LuaInteger
-     * @see LuaDouble
-     * @see LuaString
-     * @see LuaUserdata
-     */
-    public static LuaValue coerce(Object o) {
-        if (o == null)
-            return LuaConstant.NIL;
-        Class clazz = o.getClass();
-        Coercion c = (Coercion) COERCIONS.get(clazz);
-        if (c == null) {
-            c = clazz.isArray() ? arrayCoercion :
-                o instanceof LuaValue ? luaCoercion :
-                    instanceCoercion;
-            COERCIONS.put(clazz, c);
-        }
-        return c.coerce(o);
-    }
-
     static final Coercion instanceCoercion = new InstanceCoercion();
 
     static final Coercion arrayCoercion = new ArrayCoercion();
 
     static final Coercion luaCoercion = new LuaCoercion();
+
+    private CoerceJavaToLua() {}
 }
