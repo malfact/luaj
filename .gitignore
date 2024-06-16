@@ -17,3 +17,5 @@ docs
 .gradle/
 .build/
 .idea/
+.run/
+/.run/
