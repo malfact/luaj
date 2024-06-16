@@ -1,25 +1,41 @@
-# This is a fork
-
-## `Major Changes:`
+## `Current Changes:`
+- **Removal of Java ME support.**
 - Switch from `Ant` to `Gradle`
-- Rewriting of the way to bind Java methods to lua functions
+- For java objects coerced to lua, final fields will now throw a `LuaError` when there is an attempt at modification.
+- **New annotations** for Java to Lua coercion.
+  - `@LuaField(default="")`
+  - `@LuaMethod(default="")`
+
+    Both `@LuaField` and `@LuaMethod`, can be used to change the name of the method or field that is exposed to lua.
+
+  - `@JavaOnly`
+  
+    This will prevent the Coercer from exposing a method, field, or inner class to lua. <br>
+    *Note: This will have no effect on any class directly passed to the Coercer.*
+  
 - Removal of *type* constants in `LuaValue.class`
   - Replaced with enum `LuaType.class`
 
 ## `Planned Changes`
-- Function registration for lua via Functional Interfaces
-- Annotation processing for userdata classes
-- Rework of `VarArgs` to allow for named parameters
-  - This may involve treating varargs as a table and reworking the inheritance tree
-
+- Lua/Java Function binding using functional interfaces.
+  - This would eliminate the need to declare a `LuaFunction` class for each function.
+  - Long-term this would require a rewrite of the `Closure` class, as well as part of the `JSE` `JavaBuilder` and `JavaGen` classes.
+- Rework the `Varargs` class.
+  - Right all `LuaValue`s inherit from `Varargs`. I understand from a stylistic perspective it makes it similar to the `lua` language, but it also causes it to be difficult to make changes in the whole library.
+- Upgrade to Lua 5.3.x
+- Merge `core` and `jse` modules.
+  - With the removal of `Java ME` support, I don't see any current reason to keep these two separate.
+- More functionality for annotation processing.
+  - One idea is to allow the declaration of a getter/setter method for fields. This would be functionally similar to C# properties.
 
 ## `Known Issues:`
 - The `Compatability` test `oslib.lua` fails on the calls to test `os.time`
   - The test doesn't set a static local, so testing in another time zone will result in failure.
 
-
 *Note: Everything below is from the original project and may not work as intended* <br>
 *Guides will be updates when a mostly working build is ready*
+
+# This is a fork
 
 # Original README.md
 
