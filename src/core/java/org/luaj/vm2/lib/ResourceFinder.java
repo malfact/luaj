@@ -54,5 +54,5 @@ public interface ResourceFinder {
 	 * @param filename
 	 * @return InputStream, or null if not found. 
 	 */
-	public InputStream findResource( String filename );
+	InputStream findResource( String filename );
 }
