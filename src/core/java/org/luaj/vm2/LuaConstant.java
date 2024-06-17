@@ -104,5 +104,15 @@ public class LuaConstant {
 
         /** LuaString constant with value "__concat" for use as metatag */
         public static final LuaString CONCAT = LuaValue.valueOf("__concat");
+
+        /**
+         * LuaString constant with value "__pairs" for use as metatag
+         */
+        public static final LuaString PAIRS = LuaValue.valueOf("__pairs");
+
+        /**
+         * LuaString constant with value "__ipairs" for use as metatag
+         */
+        public static final LuaString IPAIRS = LuaValue.valueOf("__ipairs");
     }
 }
