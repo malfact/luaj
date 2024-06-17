@@ -563,11 +563,11 @@ public class LuaClosure extends LuaFunction {
 				}
 			}
 			if (frame == null) {
-				file = p.source != null? p.source.tojstring(): "?";
+				file = p.source != null ? p.source.tojstring(): "?";
 				line = p.lineinfo != null && pc >= 0 && pc < p.lineinfo.length ? p.lineinfo[pc] : -1;
 			}
 		}
-		le.fileline = file + ":" + line;
+		le.fileline = file + ":" + line + ": ";
 		le.traceback = errorHook(le.getMessage(), le.level);
 	}
 	
