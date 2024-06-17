@@ -1225,7 +1225,7 @@ public abstract class LuaValue extends Varargs {
      * @throws LuaError in all cases
      */
     protected LuaValue argumentError(String expected) {
-        throw new LuaError("bad argument: " + expected + " expected, got " + getType().typeName);
+        throw new LuaError("bad argument (" + expected + " expected, got " + getType().typeName + ")");
     }
 
     /**
@@ -1237,7 +1237,7 @@ public abstract class LuaValue extends Varargs {
      * @throws LuaError in all cases
      */
     public static LuaValue argumentError(int iarg, String msg) {
-        throw new LuaError("bad argument #" + iarg + ": " + msg);
+        throw new LuaError("bad argument #" + iarg + " (" + msg + ")");
     }
 
     /**
