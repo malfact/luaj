@@ -53,6 +53,7 @@ shadowJar {
     }
     minimize()
     archiveFileName = "luaj2-${project.version}-snapshot.jar"
+    archiveClassifier.set('')
 }
 
 tasks.withType(JavaCompile).configureEach {
