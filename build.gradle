@@ -52,7 +52,6 @@ shadowJar {
         include(dependency('org.apache.bcel:bcel:6.6.0'))
     }
     minimize()
-    archiveFileName = "luaj2-${project.version}-snapshot.jar"
     archiveClassifier.set('')
 }
 
