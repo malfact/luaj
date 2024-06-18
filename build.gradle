@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'net.malfact.luaj'
-version = '1.1.0'
+version = '1.1.1'
 
 sourceSets {
     main {
@@ -45,6 +45,7 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
+    withSourcesJar()
 }
 
 shadowJar {
@@ -66,6 +67,7 @@ publishing {
     publications {
         shadow(MavenPublication) { publication ->
             project.shadow.component(publication)
+            artifact sourcesJar
         }
     }
 
@@ -79,4 +81,8 @@ publishing {
             }
         }
     }
+}
+
+def shadowBuild = tasks.register("shadowBuild") {
+    dependsOn(sourcesJar, shadowJar)
 }
