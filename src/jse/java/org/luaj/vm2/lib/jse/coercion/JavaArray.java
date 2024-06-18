@@ -21,13 +21,13 @@
  ******************************************************************************/
 package org.luaj.vm2.lib.jse.coercion;
 
-import java.lang.reflect.Array;
-
+import org.luaj.vm2.LuaConstant;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaUserdata;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
-import org.luaj.vm2.LuaConstant;
+
+import java.lang.reflect.Array;
 
 /**
  * LuaValue that represents a Java instance of array type.
@@ -63,6 +63,7 @@ class JavaArray extends LuaUserdata {
         setmetatable(array_metatable);
     }
 
+
     public LuaValue get(LuaValue key) {
         if (key.equals(LENGTH))
             return valueOf(Array.getLength(m_instance));
@@ -84,5 +85,69 @@ class JavaArray extends LuaUserdata {
                 error("array index out of bounds");
         } else
             super.set(key, value);
+    }
+
+    @Override
+    public LuaTable checktable() {
+        return new ReferenceTable(this);
+    }
+
+    @Override
+    public LuaTable opttable(LuaTable defval) {
+        return new ReferenceTable(this);
+    }
+
+    @Override
+    public boolean istable() {
+        return true;
+    }
+
+    private static final class ReferenceTable extends LuaTable {
+
+        private final JavaArray array;
+
+        private ReferenceTable(JavaArray array) {
+            this.array = array;
+        }
+
+        @Override
+        public LuaValue get(LuaValue key) {
+            return array.get(key);
+        }
+
+        @Override
+        public void set(LuaValue key, LuaValue value) {
+            array.set(key, value);
+        }
+
+        @Override
+        public LuaValue rawget(String key) {
+            return unimplementedError("rawget");
+        }
+
+        @Override
+        public void rawset(int key, String value) {
+            unimplementedError("rawset");
+        }
+
+        @Override
+        public LuaValue getmetatable() {
+            return array.getmetatable();
+        }
+
+        @Override
+        public LuaValue setmetatable(LuaValue metatable) {
+            return array.setmetatable(metatable);
+        }
+
+        @Override
+        public int length() {
+            return array.length();
+        }
+
+        @Override
+        public LuaValue len() {
+            return array.len();
+        }
     }
 }
