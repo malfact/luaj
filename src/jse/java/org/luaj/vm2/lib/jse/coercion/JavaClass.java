@@ -99,8 +99,11 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
 
     LuaValue getMethod(LuaValue key) {
         if (methods == null) {
+            Map<LuaValue, LuaValue> methods = new HashMap<>();
+            List<JavaConstructor> constructorList = new ArrayList<>();
+            Map<String, List<JavaMethod>> namedMethodList = new HashMap<>();
+
             // --- Methods ---
-            Map<String, List<JavaMethod>> namedlists = new HashMap<>();
             for (Method method : ((Class<?>) m_instance).getMethods()) {
                 if (isJavaOnly(method))
                     continue;
@@ -113,13 +116,21 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
                 else
                     name = luaMethod.value();
 
-                List<JavaMethod> list = namedlists.computeIfAbsent(name, k -> new ArrayList<>());
+                boolean staticMethod = Modifier.isStatic(method.getModifiers());
+                boolean constructorMethod = name.equals(NEW.tojstring());
+
+                if (staticMethod && constructorMethod) {
+                    constructorList.add(JavaConstructor.forMethod(method));
+                    continue;
+                } else if (constructorMethod) {
+                    // Non-static "fake" constructors are just ignored.
+                    // Otherwise, the first parameter would need to be an instance.
+                    continue;
+                }
+
+                List<JavaMethod> list = namedMethodList.computeIfAbsent(name, k -> new ArrayList<>());
                 list.add(JavaMethod.forMethod(method));
             }
-
-            Map<LuaValue, LuaValue> map = new HashMap<>();
-
-            List<JavaConstructor> constructorList = new ArrayList<>();
 
             // --- Constructors ---
             for (Constructor<?> constructor : ((Class<?>) m_instance).getConstructors()) {
@@ -133,24 +144,24 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
                 case 0:
                     break;
                 case 1:
-                    map.put(NEW, constructorList.getFirst());
+                    methods.put(NEW, constructorList.getFirst());
                     break;
                 default:
-                    map.put(NEW, JavaConstructor.forConstructors(constructorList.toArray(new JavaConstructor[0])));
+                    methods.put(NEW, JavaConstructor.forConstructors(constructorList.toArray(new JavaConstructor[0])));
                     break;
             }
 
             // --- Finalize Methods ---
-            for (Entry<String, List<JavaMethod>> stringListEntry : namedlists.entrySet()) {
+            for (Entry<String, List<JavaMethod>> stringListEntry : namedMethodList.entrySet()) {
                 String name = stringListEntry.getKey();
-                List<JavaMethod> methods = stringListEntry.getValue();
+                List<JavaMethod> methodList = stringListEntry.getValue();
 
-                map.put(LuaValue.valueOf(name),
-                    methods.size() == 1 ?
-                        methods.getFirst() :
-                        JavaMethod.forMethods(methods.toArray(new JavaMethod[0])));
+                methods.put(LuaValue.valueOf(name),
+                    methodList.size() == 1 ?
+                        methodList.getFirst() :
+                        JavaMethod.forMethods(methodList.toArray(new JavaMethod[0])));
             }
-            this.methods = map;
+            this.methods = methods;
         }
         return methods.get(key);
     }

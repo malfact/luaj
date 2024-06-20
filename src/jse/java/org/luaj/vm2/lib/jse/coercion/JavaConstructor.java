@@ -22,7 +22,9 @@
 package org.luaj.vm2.lib.jse.coercion;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +41,7 @@ import org.luaj.vm2.lib.VarArgFunction;
  * created by calling the constructor.
  * <p>
  * This class is not used directly.
- * It is returned by calls to {@link JavaClass#new(LuaValue key)}
+ * It is returned by calls to {@code JavaClass#new(LuaValue key)}
  * when the value of key is "new".
  *
  * @see CoerceJavaToLua
@@ -47,7 +49,7 @@ import org.luaj.vm2.lib.VarArgFunction;
  */
 class JavaConstructor extends JavaMember {
 
-    static final Map<Constructor<?>, JavaConstructor> constructors = Collections.synchronizedMap(new HashMap<>());
+    static final Map<Executable, JavaConstructor> constructors = Collections.synchronizedMap(new HashMap<>());
 
     static JavaConstructor forConstructor(Constructor<?> constructor) {
         JavaConstructor javaConstructor = constructors.get(constructor);
@@ -56,13 +58,22 @@ class JavaConstructor extends JavaMember {
         return javaConstructor;
     }
 
+    // Allows for "fake" constructors
+    static JavaConstructor forMethod(Method method) {
+        JavaConstructor javaConstructor = constructors.get(method);
+        if (javaConstructor == null)
+            constructors.put(method, javaConstructor = new JavaConstructor(method));
+
+        return javaConstructor;
+    }
+
     public static LuaValue forConstructors(JavaConstructor[] array) {
         return new Overload(array);
     }
 
-    final Constructor<?> constructor;
+    final Executable constructor;
 
-    private JavaConstructor(Constructor<?> c) {
+    private JavaConstructor(Executable c) {
         super(c.getParameterTypes(), c.getModifiers());
         this.constructor = c;
     }
@@ -70,7 +81,10 @@ class JavaConstructor extends JavaMember {
     public Varargs invoke(Varargs args) {
         Object[] a = convertArgs(args);
         try {
-            return CoerceJavaToLua.coerce(constructor.newInstance(a));
+            if (constructor instanceof Constructor<?> c)
+                return CoerceJavaToLua.coerce(c.newInstance(a));
+            else
+                return CoerceJavaToLua.coerce(((Method) constructor).invoke(null, a));
         } catch (InvocationTargetException e) {
             throw new LuaError(e.getTargetException());
         } catch (Exception e) {
