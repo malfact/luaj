@@ -53,6 +53,8 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
     Map<LuaValue, LuaValue> methods;
     Map<LuaValue, Class<?>> innerclasses;
 
+    JavaUservalues uservalues;
+
     public static JavaClass forClass(Class<?> c) {
         JavaClass j = classes.get(c);
         if (j == null)
@@ -80,6 +82,14 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
             for (Field field : f) {
                 if (isJavaOnly(field))
                     continue;
+
+                if (JavaUservalues.class.isAssignableFrom(field.getType())) {
+                    try {
+                        uservalues = (JavaUservalues) field.get(m_instance);
+                    } catch (IllegalAccessException ignored) {
+                        uservalues = null;
+                    }
+                }
 
                 LuaField luaField = field.getAnnotation(LuaField.class);
                 String name;
@@ -171,6 +181,9 @@ public class JavaClass extends JavaInstance implements CoerceJavaToLua.Coercion 
             Map<LuaValue, Class<?>> innerClasses = new HashMap<>();
             for (Class<?> clazz : ((Class<?>) m_instance).getClasses()) {
                 if (isJavaOnly(clazz))
+                    continue;
+
+                if (JavaUservalues.class.isAssignableFrom(clazz))
                     continue;
 
                 String name = clazz.getName();
