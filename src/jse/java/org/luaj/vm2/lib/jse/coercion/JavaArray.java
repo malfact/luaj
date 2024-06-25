@@ -50,7 +50,6 @@ class JavaArray extends LuaUserdata {
     }
 
     static final LuaValue LENGTH = valueOf("length");
-
     static final LuaTable array_metatable;
 
     static {
@@ -58,8 +57,11 @@ class JavaArray extends LuaUserdata {
         array_metatable.rawset(LuaConstant.MetaTag.LEN, new LenFunction());
     }
 
+    private final ReferenceTable referenceTable;
+
     JavaArray(Object instance) {
         super(instance);
+        this.referenceTable = new ReferenceTable(this);
         setmetatable(array_metatable);
     }
 
@@ -70,7 +72,7 @@ class JavaArray extends LuaUserdata {
         if (key.isint()) {
             int i = key.toint() - 1;
             return i >= 0 && i < Array.getLength(m_instance) ?
-                CoerceJavaToLua.coerce(Array.get(m_instance, key.toint() - 1)) :
+                CoerceJavaToLua.coerce(Array.get(m_instance, i)) :
                 LuaConstant.NIL;
         }
         return super.get(key);
@@ -89,12 +91,12 @@ class JavaArray extends LuaUserdata {
 
     @Override
     public LuaTable checktable() {
-        return new ReferenceTable(this);
+        return referenceTable;
     }
 
     @Override
     public LuaTable opttable(LuaTable defval) {
-        return new ReferenceTable(this);
+        return referenceTable;
     }
 
     @Override
@@ -122,12 +124,12 @@ class JavaArray extends LuaUserdata {
 
         @Override
         public LuaValue rawget(String key) {
-            return unimplementedError("rawget");
+            return array.get(key);
         }
 
         @Override
         public void rawset(int key, String value) {
-            unimplementedError("rawset");
+            array.set(key, value);
         }
 
         @Override
