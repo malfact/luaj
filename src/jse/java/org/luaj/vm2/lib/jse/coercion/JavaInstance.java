@@ -68,7 +68,14 @@ class JavaInstance extends LuaUserdata {
             return JavaClass.forClass(innerClass);
 
         if (jclass.uservalues != null) {
-            return CoerceJavaToLua.coerce(jclass.uservalues.get(CoerceLuaToJava.coerce(key, Object.class)));
+            try {
+                var uservalues = jclass.uservalues.get(m_instance);
+                Object o = ((JavaUservalues) uservalues).get(CoerceLuaToJava.coerce(key, Object.class));
+                return CoerceJavaToLua.coerce(o);
+            } catch (Exception e) {
+                throw new LuaError(e);
+            }
+
         }
 
         return super.get(key);
@@ -91,11 +98,16 @@ class JavaInstance extends LuaUserdata {
         }
 
         if (jclass.uservalues != null) {
-            jclass.uservalues.set(
-                CoerceLuaToJava.coerce(key, Object.class),
-                CoerceLuaToJava.coerce(value, Object.class)
-            );
-            return;
+            try {
+                var uservalues = jclass.uservalues.get(m_instance);
+                ((JavaUservalues) uservalues).set(
+                    CoerceLuaToJava.coerce(key, Object.class),
+                    CoerceLuaToJava.coerce(value, Object.class)
+                );
+                return;
+            } catch (Exception e) {
+                throw new LuaError(e);
+            }
         }
 
         super.set(key, value);
