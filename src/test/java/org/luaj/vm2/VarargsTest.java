@@ -218,7 +218,7 @@ class VarargsTest {
     }
 
     private void expectNegSubargsError(Varargs v) {
-        String expected_msg = "bad argument #1: start must be > 0";
+        String expected_msg = "bad argument #1 (start must be > 0)";
         try {
             v.subargs(0);
             fail("Failed to throw exception for index 0");
